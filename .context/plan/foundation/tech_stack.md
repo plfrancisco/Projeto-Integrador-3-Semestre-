@@ -180,8 +180,8 @@ backend/
 
 frontend/
 ├── src/
-│   ├── components/     # componentes React
-│   ├── pages/          # telas (upload, resultado, histórico)
+│   ├── components/     # componentes React reutilizáveis
+│   ├── pages/          # dashboard, detalhe, nova análise, cadastro
 │   └── services/       # chamadas à API
 ├── package.json
 └── Dockerfile
