@@ -47,6 +47,14 @@ dataset/
 datasets/
 data/raw/
 data/processed/
+data/synthetic/
+data/real/
+data/masks/
+
+# Material de referência da empresa parceira (proprietário — não versionar).
+# Usado apenas como apoio para a especificação, não faz parte do pipeline.
+.context/reference/
+!.context/reference/**/.gitkeep
 
 # Logs
 *.log
