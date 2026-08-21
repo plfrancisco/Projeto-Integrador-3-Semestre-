@@ -92,6 +92,32 @@ A IA deve:
 Se a localização necessária não estiver documentada, a IA deve pedir decisão
 ao usuário.
 
+## 6.1 Padrão de formatação dos documentos
+
+Todo documento da `.context` segue o mesmo formato, para que a leitura seja
+previsível e a navegação entre documentos não exija reaprender a estrutura:
+
+1. **Título em caixa alta**, seguido de travessão e do contexto:
+   `# NOME DO DOCUMENTO — Projeto Integrador`
+2. **Bloco de metadados** logo abaixo do título, sem linha em branco entre
+   os campos:
+   ```text
+   **Versão:** 1.0
+   **Status:** ATIVO | RASCUNHO | CONCLUÍDO
+   **Escopo:** uma linha descrevendo o que o documento cobre
+   ```
+3. **Separador `---`** entre todas as seções de primeiro nível.
+4. **Seções numeradas em H1**: `# 1. Objetivo`, `# 2. Escopo`.
+5. **Subseções numeradas em H2**: `## 4.1 Autorizado`.
+6. **Quebra de linha em ~78 colunas.** Tabelas são exceção — quebrá-las
+   inviabiliza a renderização.
+7. **Blocos de código sempre com linguagem declarada** (` ```text `,
+   ` ```python `), para evitar realce incorreto.
+8. **Marcador de fim**: `# FIM DO NOME DO DOCUMENTO`.
+
+Documentos com pendências devem encerrar com uma seção de pendências em
+formato de checklist, antes do marcador de fim.
+
 ---
 
 # 7. Proteção de documentos

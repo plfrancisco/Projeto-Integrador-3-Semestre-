@@ -1,9 +1,19 @@
-# Índice de Planejamento — Projeto Integrador
+# ÍNDICE DE PLANEJAMENTO — Projeto Integrador
+
+**Versão:** 1.0
+**Status:** ATIVO
+**Escopo:** índice dos documentos normativos do projeto
+
+---
+
+# 1. Objetivo
 
 Esta pasta reúne os documentos normativos do projeto. Leia somente o conjunto
 necessário para a tarefa atual e mantenha as decisões alinhadas a eles.
 
-## Estrutura
+---
+
+# 2. Estrutura
 
 ```text
 plan/
@@ -11,18 +21,27 @@ plan/
 └── data/        # banco, fontes de dados e modelo de dados
 ```
 
-## Ordem de leitura recomendada
+---
+
+# 3. Ordem de leitura recomendada
 
 1. `foundation/project_overview.md`
 2. documento da área afetada
 3. `.context/rules/ai_development_rules.md`
 4. task aplicável em `.context/task/`
 
-## Documentos por domínio
+---
+
+# 4. Documentos por domínio
 
 | Domínio | Documento | Uso |
 |---|---|---|
 | Fundação | `foundation/project_overview.md` | Problema, escopo, abordagem técnica |
 | Fundação | `foundation/proposta_individual.md` | Proposta individual de solução (formulário acadêmico) |
 | Fundação | `foundation/tech_stack.md` | Stack tecnológica, estrutura de pastas e decisões de ferramentas |
+| Fundação | `foundation/hardware_armadilha.md` | Especificações do equipamento real (StickFly K-45) e implicações para a visão computacional |
 | Dados | `data/data_model.md` | Modelo de dados, entidades e regras de persistência |
+
+---
+
+# FIM DO ÍNDICE DE PLANEJAMENTO

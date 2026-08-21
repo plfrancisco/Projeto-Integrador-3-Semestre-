@@ -1,9 +1,19 @@
-# Índice de Tasks — Projeto Integrador
+# ÍNDICE DE TASKS — Projeto Integrador
 
-Este índice define qual documento controla a execução. A existência de uma task
-histórica ou futura não autoriza implementação.
+**Versão:** 1.0
+**Status:** ATIVO
+**Escopo:** controle de execução e precedência entre tasks
 
-## Fonte canônica
+---
+
+# 1. Objetivo
+
+Este índice define qual documento controla a execução. A existência de uma
+task histórica ou futura não autoriza implementação.
+
+---
+
+# 2. Fonte canônica
 
 Tasks são organizadas por especialidade — cada arquivo é a única fonte de
 ordem, checkbox e status para seu domínio.
@@ -12,16 +22,25 @@ ordem, checkbox e status para seu domínio.
 |---|---|---|
 | *(nenhuma task ativa ainda)* | — | — |
 
-## Documentos históricos
+---
+
+# 3. Documentos históricos
 
 Arquivos concluídos ficam em `completed/`, fora do fluxo de execução ativo.
+Não podem ser alterados sem autorização explícita.
 
-## Precedência
+---
+
+# 4. Precedência
 
 1. `.context/rules/ai_development_rules.md`
 2. documentos normativos em `.context/plan/`
 3. arquivo de task **ativo** da especialidade em questão
-4. arquivos históricos somente para contexto
+4. arquivos históricos, somente para contexto
 
 Conflito entre task e documento normativo deve ser apresentado ao usuário e
 corrigido antes da implementação.
+
+---
+
+# FIM DO ÍNDICE DE TASKS
