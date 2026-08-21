@@ -51,6 +51,9 @@ data/synthetic/
 data/real/
 data/masks/
 
+# Imagens analisadas em runtime (referenciadas por analise.caminho_imagem)
+data/uploads/
+
 # Material de referência da empresa parceira (proprietário — não versionar).
 # Usado apenas como apoio para a especificação, não faz parte do pipeline.
 .context/reference/

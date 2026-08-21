@@ -107,12 +107,17 @@ início do projeto, não na véspera da entrega.
 
 | Componente | Tecnologia | Justificativa |
 |---|---|---|
-| Banco | PostgreSQL | Robusto, gratuito, escala bem. No MVP pode não ser necessário, mas quando persistir histórico de análises e clientes já está pronto |
-| ORM | SQLAlchemy ou Tortoise (a definir) | Integra com FastAPI |
+| Banco | PostgreSQL | Dados fortemente relacionais; tipos adequados a série temporal e metadados flexíveis; é o banco que seria usado em produção |
+| ORM | SQLAlchemy | Padrão da indústria, documentação vasta — decisivo sob prazo |
+| Migrations | Alembic | Integração nativa com SQLAlchemy; usado desde a primeira tabela |
 
-> **No MVP:** o banco é opcional. O modelo recebe imagem e retorna resultado
-> sem precisar persistir nada. O banco entra quando houver cadastro de
-> armadilhas, histórico de análises e afins.
+> **O banco entra no MVP.** A decisão anterior de tratá-lo como opcional foi
+> revista: sem histórico o sistema é apenas um classificador de imagem; com
+> histórico é um sistema de monitoramento capaz de projetar quando a armadilha
+> saturará, que é o valor de negócio da proposta.
+
+Entidades do MVP: `armadilha`, `refil` e `analise`. Modelo completo,
+justificativas e regras de persistência em `../data/data_model.md`.
 
 ---
 
@@ -122,6 +127,20 @@ início do projeto, não na véspera da entrega.
 |---|---|---|
 | Containerização | Docker + Docker Compose | Ambiente reproduzível, fácil de subir backend, frontend e banco juntos |
 | Deploy | A definir | Railway, Fly.io, VPS ou infraestrutura da faculdade |
+
+## 6.1 O que roda em container
+
+| Componente | Execução |
+|---|---|
+| PostgreSQL | Docker |
+| Backend (FastAPI) | Docker |
+| Frontend (React) | Docker |
+| **Treino do modelo** | **Nativo ou Colab — fora do Docker** |
+
+O treino fica fora do Docker deliberadamente: GPU passthrough via WSL2 no
+Windows funciona, mas o esforço de configuração não se justifica no escopo do
+projeto. O treino é um processo offline que produz um arquivo de pesos, e esse
+arquivo é montado como volume no container do backend.
 
 ---
 
@@ -145,10 +164,13 @@ Proposta, a ser confirmada no início da implementação:
 ```text
 backend/
 ├── src/
-│   ├── api/            # rotas FastAPI (upload, resultado)
+│   ├── api/            # rotas FastAPI (upload, análises, armadilhas)
+│   ├── entities/       # entidades ORM (armadilha, refil, analise)
+│   ├── repositories/   # acesso ao banco
 │   ├── inference/      # pipeline de inferência (imagem → status)
-│   ├── models/         # definição da U-Net
+│   ├── networks/       # definição da U-Net e do baseline OpenCV
 │   └── config/         # configurações e constantes
+├── migrations/         # migrations do banco
 ├── training/           # scripts de treino (executados fora do servidor)
 │   ├── train.py
 │   ├── evaluate.py
@@ -159,23 +181,29 @@ backend/
 frontend/
 ├── src/
 │   ├── components/     # componentes React
-│   ├── pages/          # telas (upload, resultado)
+│   ├── pages/          # telas (upload, resultado, histórico)
 │   └── services/       # chamadas à API
 ├── package.json
 └── Dockerfile
 
 data/                   # NÃO versionado
-├── synthetic/
-├── real/
-└── masks/
+├── synthetic/          # dataset sintético gerado
+├── real/               # fotos reais da empresa
+├── masks/              # máscaras de segmentação
+└── uploads/            # imagens analisadas, referenciadas por analise.caminho_imagem
 
 models/                 # NÃO versionado
-└── checkpoints/
+└── checkpoints/        # pesos treinados, montados como volume no backend
 
 notebooks/              # exploração e prototipagem
 
 docker-compose.yml
 ```
+
+> **Nota sobre nomenclatura:** a rede neural fica em `src/networks/`, não em
+> `src/models/`. Com banco de dados no projeto, `models` é ambíguo — em stacks
+> web o termo designa entidades de persistência. Separar `entities/` (ORM) de
+> `networks/` (arquitetura da rede) elimina a ambiguidade.
 
 ---
 
@@ -183,7 +211,6 @@ docker-compose.yml
 
 - [ ] Onde treinar (GPU local, Colab ou Kaggle)
 - [ ] Tracking de experimentos (W&B, MLflow ou manual)
-- [ ] ORM para PostgreSQL (SQLAlchemy vs. Tortoise)
 - [ ] Gerenciador Python (uv vs. pip + venv)
 - [ ] Plataforma de deploy
 
