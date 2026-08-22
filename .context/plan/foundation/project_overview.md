@@ -61,7 +61,7 @@ Este projeto é um **MVP de validação técnica**, não uma solução completa.
    evidência, que o modelo treinado agrega valor real.
 2. **Modelo de segmentação treinado** — U-Net com encoder pré-treinado
    (transfer learning). Recebe imagem de armadilha, gera máscara de
-   segmentação, calcula % de área coberta, classifica como `ok`, `atenção`
+   segmentação, calcula % de área coberta, classifica como `ok`, `atencao`
    ou `trocar`.
 3. **Relatório de métricas comparativo** — IoU/Dice, erro percentual, matriz
    de confusão, gráficos de loss, exemplos visuais de predição vs. gabarito,
@@ -101,8 +101,11 @@ insetos individualmente.
 - Motivo: mosquitos colados podem se sobrepor/aglomerar, tornando contagem
   individual difícil e propensa a erro. Área coberta é um indicador mais
   direto e robusto de saturação.
-- Trata-se de um problema de **segmentação semântica** — separar pixels de
-  "superfície limpa" dos pixels "cobertos por insetos/sujeira".
+- Trata-se de um problema de **segmentação semântica em três classes** —
+  fundo, superfície limpa e superfície coberta. As três classes permitem que o
+  percentual seja calculado sobre a área da placa detectada, e não sobre a
+  imagem inteira, tornando o resultado independente do enquadramento da foto.
+  Justificativa completa em `../model/modelo_spec.md`, seção 2.
 - **Modelo:** U-Net via `segmentation_models_pytorch`, com encoder ResNet34
   pré-treinado em ImageNet (transfer learning) — decisão motivada pelo
   dataset pequeno. Detalhes e alternativas avaliadas em `tech_stack.md`.
@@ -115,11 +118,16 @@ Com base no percentual de área coberta, classificar em três faixas. Os
 limiares abaixo são sugestões iniciais e devem ser calibrados com dados
 reais.
 
-| Status | Significado | Limiar sugerido |
-|---|---|---|
-| `ok` | Armadilha funcional, sem necessidade de troca | < 40% coberta |
-| `atenção` | Armadilha se aproximando da saturação | 40% – 70% coberta |
-| `trocar` | Armadilha saturada, eficácia comprometida | > 70% coberta |
+| Valor | Exibição | Significado | Limiar sugerido |
+|---|---|---|---|
+| `ok` | OK | Armadilha funcional, sem necessidade de troca | < 40% coberta |
+| `atencao` | Atenção | Armadilha se aproximando da saturação | 40% – 70% coberta |
+| `trocar` | Trocar | Armadilha saturada, eficácia comprometida | > 70% coberta |
+
+**Grafia:** o valor técnico é `atencao`, sem acento — é assim que trafega na
+API e é persistido no banco. A forma acentuada existe apenas na exibição, e é
+responsabilidade do frontend. Misturar as duas formas no código produziria
+comparações que falham silenciosamente.
 
 ## 7.3 Pipeline do MVP
 
@@ -128,13 +136,13 @@ Imagem da armadilha (input)
         ↓
 Pré-processamento (resize, normalização)
         ↓
-Modelo de segmentação (U-Net)
+Modelo de segmentação (U-Net, três classes)
         ↓
-Máscara binária (área coberta vs. limpa)
+Máscara de classes (fundo / placa limpa / placa coberta)
         ↓
-Cálculo do percentual de área coberta
+Cálculo do percentual sobre a área da placa
         ↓
-Classificação do status (ok / atenção / trocar)
+Classificação do status (ok / atencao / trocar)
         ↓
 Output: máscara visual + percentual + status
 ```

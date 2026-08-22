@@ -34,8 +34,105 @@ interface não consuma.
 | `400` | Requisição malformada ou arquivo inválido |
 | `404` | Recurso não encontrado |
 | `409` | Conflito de estado — ex.: análise em armadilha sem refil ativo |
+| `413` | Arquivo acima do limite de tamanho |
 | `422` | Falha de validação de campo |
 | `500` | Falha na inferência ou erro interno |
+
+## 2.2 Formato de erro
+
+Toda resposta de erro usa o mesmo corpo, em qualquer endpoint:
+
+```json
+{
+  "erro": {
+    "codigo": "REFIL_ATIVO_INEXISTENTE",
+    "mensagem": "A armadilha não possui refil ativo.",
+    "detalhes": { "armadilha_id": "3f2a..." }
+  }
+}
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `codigo` | Sim | Identificador estável em maiúsculas, usado pelo frontend para decidir o comportamento |
+| `mensagem` | Sim | Texto em português, exibível ao usuário |
+| `detalhes` | Não | Objeto com contexto adicional; ausente quando não houver |
+
+O frontend deve reagir ao `codigo`, nunca ao texto da `mensagem` — mensagens
+podem ser reescritas sem aviso, códigos não.
+
+## 2.3 Códigos de erro
+
+| Código | HTTP | Situação |
+|---|---|---|
+| `ARMADILHA_NAO_ENCONTRADA` | 404 | `armadilha_id` inexistente |
+| `ANALISE_NAO_ENCONTRADA` | 404 | `analise_id` inexistente |
+| `REFIL_ATIVO_INEXISTENTE` | 409 | Tentativa de análise em armadilha sem refil ativo |
+| `IDENTIFICADOR_DUPLICADO` | 409 | Já existe armadilha com o mesmo `identificador` |
+| `ARQUIVO_AUSENTE` | 400 | Campo `imagem` não enviado |
+| `FORMATO_NAO_SUPORTADO` | 400 | Arquivo não é JPEG ou PNG |
+| `RESOLUCAO_INSUFICIENTE` | 400 | Menor que 512 px no maior lado |
+| `ARQUIVO_MUITO_GRANDE` | 413 | Acima de 10 MB |
+| `VALIDACAO_FALHOU` | 422 | Campo obrigatório ausente ou inválido |
+| `PLACA_NAO_DETECTADA` | 500 | Modelo não localizou a superfície adesiva |
+| `FALHA_INFERENCIA` | 500 | Erro durante a execução do modelo |
+
+## 2.4 Restrições de upload
+
+| Restrição | Valor |
+|---|---|
+| Tamanho máximo | 10 MB |
+| Formatos aceitos | JPEG, PNG |
+| Resolução mínima | 512 px no maior lado |
+| Resolução máxima | Sem limite — a imagem é redimensionada no pré-processamento |
+
+O mínimo de 512 px decorre da resolução de entrada do modelo, definida em
+`../model/modelo_spec.md`, seção 4. Imagens menores seriam ampliadas, sem
+ganho real de informação e com perda de precisão na segmentação.
+
+## 2.5 Modo de execução da inferência
+
+A inferência é **síncrona**. A requisição permanece aberta até a conclusão.
+
+| Item | Valor |
+|---|---|
+| Timeout | 30 segundos |
+| Tempo esperado em CPU | 1 a 3 segundos por imagem |
+
+Processamento assíncrono com fila e polling foi descartado: exigiria
+infraestrutura adicional e complexidade no frontend para um ganho inexistente
+na escala do MVP, onde as análises são enviadas uma a uma, manualmente.
+
+Caso o tempo de resposta medido ultrapasse 10 segundos de forma consistente, a
+decisão deve ser reavaliada.
+
+## 2.6 CORS e variáveis de ambiente
+
+**CORS:** origem permitida definida pela variável `CORS_ORIGENS`, aceitando
+lista separada por vírgula. Em desenvolvimento, `http://localhost:5173`
+— porta padrão do Vite.
+
+**Variáveis de ambiente do backend:**
+
+| Variável | Exemplo | Obrigatória |
+|---|---|---|
+| `DATABASE_URL` | `postgresql://user:senha@db:5432/armadilhas` | Sim |
+| `MODEL_WEIGHTS_PATH` | `/app/models/checkpoints/latest.pt` | Sim |
+| `MODEL_VERSION` | `v1.2.0` | Sim |
+| `UPLOADS_DIR` | `/app/data/uploads` | Sim |
+| `CORS_ORIGENS` | `http://localhost:5173` | Sim |
+| `LIMIAR_ATENCAO` | `40` | Não — padrão 40 |
+| `LIMIAR_TROCAR` | `70` | Não — padrão 70 |
+
+**Variáveis do frontend:**
+
+| Variável | Exemplo |
+|---|---|
+| `VITE_API_URL` | `http://localhost:8000/api` |
+
+Os limiares são variáveis de ambiente porque serão recalibrados com dados
+reais, conforme `../foundation/project_overview.md`, seção 7.2. Fixá-los no
+código exigiria alteração e novo build a cada ajuste.
 
 ---
 
@@ -334,10 +431,7 @@ imagem original, evitando reprocessamento a cada visualização.
 
 # 8. Pendências
 
-- [ ] Definir formato visual da máscara sobreposta (cor e opacidade)
-- [ ] Definir limite de tamanho de arquivo aceito no upload
-- [ ] Definir se a inferência roda de forma síncrona ou assíncrona caso o
-      tempo de resposta se mostre elevado
+Nenhuma pendência de decisão.
 
 ---
 

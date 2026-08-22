@@ -202,7 +202,7 @@ A IA não pode:
 ## 9.5 Escopo do MVP
 
 O MVP limita-se a estimar a porcentagem de área ocupada da armadilha e
-classificar o resultado como `ok`, `atenção` ou `trocar`. Hardware real,
+classificar o resultado como `ok`, `atencao` ou `trocar`. Hardware real,
 autenticação, painel completo, modelo de negócio e integração IoT permanecem
 fora do escopo inicial, salvo aprovação explícita.
 

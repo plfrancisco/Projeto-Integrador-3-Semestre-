@@ -55,7 +55,7 @@ alerta. Ver seção 6.
 
 - identificador e localização
 - percentual de cobertura atual
-- status visual (`ok` verde, `atenção` amarelo, `trocar` vermelho)
+- status visual (`ok` verde, `atencao` âmbar, `trocar` vermelho)
 - estimativa de dias até saturar
 - data da última análise
 
@@ -264,13 +264,63 @@ não há evento assíncrono a notificar.
 
 ---
 
-# 8. Pendências
+# 8. Decisões visuais e técnicas
 
-- [ ] Definir biblioteca de gráfico para a tela de detalhe, com suporte a
-      marcador posicionável para o timelapse
-- [ ] Definir se a máscara é sobreposta com transparência ou exibida separada
-- [ ] Definir paleta de cores dos três status
-- [ ] Definir velocidade padrão de reprodução do timelapse
+## 8.1 Biblioteca de gráfico
+
+**Recharts.** Possui `ReferenceLine`, usada como marcador móvel do timelapse,
+API declarativa em React e volume de dados compatível com a escala do projeto.
+
+## 8.2 Paleta de status
+
+| Status | Cor | Hex |
+|---|---|---|
+| `ok` | Verde | `#16A34A` |
+| `atencao` | Âmbar | `#F59E0B` |
+| `trocar` | Vermelho | `#DC2626` |
+
+A cor **nunca** é o único indicador — todo elemento que comunica status exibe
+também o rótulo textual. Distinção apenas por cor exclui usuários com
+daltonismo, e vermelho e verde são justamente o par mais afetado.
+
+**Grafia:** a API trafega `atencao`, sem acento. O frontend exibe "Atenção". A
+conversão ocorre apenas na camada de apresentação.
+
+## 8.3 Máscara sobreposta
+
+Gerada pelo backend e recebida pronta, conforme
+`../model/modelo_spec.md`, seção 5.1 — magenta a 40% de opacidade sobre a
+imagem original.
+
+O frontend exibe original e máscara lado a lado, sem processamento próprio.
+
+## 8.4 Timelapse
+
+| Item | Valor |
+|---|---|
+| Velocidade padrão | 500 ms por quadro |
+| Faixa ajustável | 200 ms a 2000 ms |
+| Comportamento ao final | Para no último quadro, sem repetir |
+
+## 8.5 Nomenclatura
+
+O frontend mantém `snake_case` nos dados vindos da API, sem camada de
+conversão para `camelCase`.
+
+A conversão exigiria tipos duplicados — um para o formato da API, outro para o
+formato interno — e uma camada de mapeamento em ambas as direções. Cada campo
+novo passaria a exigir alteração em três lugares. O ganho seria apenas
+aderência à convenção idiomática do TypeScript, que não compensa o custo nesta
+escala.
+
+Código próprio do frontend, sem relação com a API, segue `camelCase`
+normalmente.
+
+---
+
+# 9. Pendências
+
+Nenhuma pendência de decisão.
 
 ---
 

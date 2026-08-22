@@ -19,6 +19,7 @@ necessário para a tarefa atual e mantenha as decisões alinhadas a eles.
 plan/
 ├── foundation/  # visão geral, arquitetura e diretrizes do projeto
 ├── data/        # banco, fontes de dados e modelo de dados
+├── model/       # arquitetura do modelo e pipeline de inferência
 ├── frontend/    # telas da interface e comportamento esperado
 └── api/         # contrato REST entre frontend e backend
 ```
@@ -43,6 +44,7 @@ plan/
 | Fundação | `foundation/tech_stack.md` | Stack tecnológica, estrutura de pastas e decisões de ferramentas |
 | Fundação | `foundation/hardware_armadilha.md` | Especificações do equipamento real (StickFly K-45) e implicações para a visão computacional |
 | Dados | `data/data_model.md` | Modelo de dados, entidades e regras de persistência |
+| Modelo | `model/modelo_spec.md` | Classes de segmentação, pré-processamento, cálculo do percentual e carregamento de pesos |
 | Frontend | `frontend/telas_spec.md` | Telas, conteúdo e comportamento esperado |
 | API | `api/api_spec.md` | Contrato REST — endpoints, payloads e erros |
 

@@ -126,7 +126,7 @@ justificativas e regras de persistência em `../data/data_model.md`.
 | Componente | Tecnologia | Justificativa |
 |---|---|---|
 | Containerização | Docker + Docker Compose | Ambiente reproduzível, fácil de subir backend, frontend e banco juntos |
-| Deploy | A definir | Railway, Fly.io, VPS ou infraestrutura da faculdade |
+| Deploy | **Fora do escopo do MVP** | A apresentação roda via Docker Compose local. Publicar em servidor é evolução posterior, não decisão pendente |
 
 ## 6.1 O que roda em container
 
@@ -146,14 +146,14 @@ arquivo é montado como volume no container do backend.
 
 # 7. Ambiente de desenvolvimento
 
-| Componente | Tecnologia |
-|---|---|
-| Gerenciador Python | uv (recomendado, substitui pip + venv) ou pip + venv |
-| Gerenciador Node | npm ou pnpm |
-| Linter/formatter Python | Ruff (substitui flake8 + black + isort) |
-| Linter/formatter JS/TS | ESLint + Prettier |
-| GPU para treino | A definir (local, Google Colab, Kaggle) |
-| Tracking de experimentos | A definir (W&B, MLflow ou manual) |
+| Componente | Tecnologia | Observação |
+|---|---|---|
+| Gerenciador Python | uv, com `pyproject.toml` | Gera lockfile, atendendo à exigência de reprodutibilidade das regras. Exporta `requirements.txt` para o build Docker |
+| Gerenciador Node | npm | |
+| Linter/formatter Python | Ruff | Substitui flake8, black e isort |
+| Linter/formatter JS/TS | ESLint + Prettier | |
+| GPU para treino | Local (NVIDIA) | Disponível no grupo; sem limite de sessão e iteração mais rápida que serviços em nuvem |
+| Tracking de experimentos | Weights & Biases | Gratuito para uso acadêmico; os gráficos são aproveitados diretamente no relatório e todo o grupo acompanha os mesmos runs |
 
 ---
 
@@ -207,12 +207,12 @@ docker-compose.yml
 
 ---
 
-# 9. Decisões pendentes
+# 9. Pendências
 
-- [ ] Onde treinar (GPU local, Colab ou Kaggle)
-- [ ] Tracking de experimentos (W&B, MLflow ou manual)
-- [ ] Gerenciador Python (uv vs. pip + venv)
-- [ ] Plataforma de deploy
+Nenhuma pendência de decisão técnica.
+
+Pendências que dependem de informação externa estão registradas em
+`project_overview.md` e `hardware_armadilha.md`.
 
 ---
 

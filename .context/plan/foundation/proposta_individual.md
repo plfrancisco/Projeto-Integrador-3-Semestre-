@@ -91,7 +91,7 @@ reais de uso.
 
 O MVP consistirá em um modelo de visão computacional treinado que recebe uma
 imagem de uma armadilha adesiva e retorna o percentual estimado de área
-coberta por insetos, classificando o status como `ok`, `atenção` ou `trocar`
+coberta por insetos, classificando o status como "ok", "atenção" ou "trocar"
 com base em um limiar definido. Não há integração com hardware real de câmera
 em campo nem painel completo para usuários finais nesta fase — o foco é
 validar a viabilidade técnica do modelo com um conjunto de imagens de teste.
