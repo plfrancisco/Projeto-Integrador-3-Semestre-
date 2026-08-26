@@ -193,10 +193,14 @@ Após obtenção de material da empresa parceira:
 
 # 10. Pendências
 
+- [ ] Especificar a geração do dataset sintético
 - [ ] Confirmar limiares de classificação com dados reais
 - [ ] Obter foto real do refil para calibrar a geração sintética
 - [ ] Definir integrantes do grupo e divisão de responsabilidades
 - [ ] Definir prazo de entrega
+
+Critérios numéricos de aprovação do MVP estão em
+`../model/avaliacao_spec.md`, seção 4.
 
 ---
 

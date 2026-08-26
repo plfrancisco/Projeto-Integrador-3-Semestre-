@@ -44,7 +44,9 @@ plan/
 | Fundação | `foundation/tech_stack.md` | Stack tecnológica, estrutura de pastas e decisões de ferramentas |
 | Fundação | `foundation/hardware_armadilha.md` | Especificações do equipamento real (StickFly K-45) e implicações para a visão computacional |
 | Dados | `data/data_model.md` | Modelo de dados, entidades e regras de persistência |
+| Dados | `data/seed_demo.md` | Cenários de dados para a apresentação |
 | Modelo | `model/modelo_spec.md` | Classes de segmentação, pré-processamento, cálculo do percentual e carregamento de pesos |
+| Modelo | `model/avaliacao_spec.md` | Divisão dos conjuntos, métricas e critérios de aprovação |
 | Frontend | `frontend/telas_spec.md` | Telas, conteúdo e comportamento esperado |
 | API | `api/api_spec.md` | Contrato REST — endpoints, payloads e erros |
 

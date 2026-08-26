@@ -100,10 +100,19 @@ validar a viabilidade técnica do modelo com um conjunto de imagens de teste.
 
 # 9. Evidência de sucesso
 
-O critério de sucesso do MVP será validado se o modelo conseguir estimar o
-percentual de área coberta com margem de erro aceitável, a definir — por
-exemplo, ±10% — em um conjunto de imagens de teste com gabarito conhecido, e
-classificar corretamente o status de troca na maioria dos casos testados.
+O critério de sucesso do MVP é a estimativa do percentual de área coberta com
+erro absoluto de até 5 pontos percentuais em um conjunto de fotos reais com
+gabarito conhecido, nunca utilizado no treinamento, com acurácia de
+classificação do status igual ou superior a 90%.
+
+A margem de 5 pontos não é arbitrária: decorre da projeção de quando a
+armadilha saturará, que é calculada a partir da variação entre medições
+sucessivas. Um erro maior tornaria essa estimativa instável a ponto de perder
+utilidade prática.
+
+Constitui reprovação, independentemente das demais métricas, qualquer caso em
+que uma armadilha saturada seja classificada como em condição normal — o erro
+na direção que compromete o controle de pragas.
 
 ---
 
