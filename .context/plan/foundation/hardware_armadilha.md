@@ -74,18 +74,45 @@ A armadilha é fixa em parede, o que significa:
 - há variação entre instalações diferentes (altura, distância da câmera), o
   que a augmentation deve cobrir.
 
-## 3.5 Cor de fundo
+## 3.5 Cor do refil e do corpo
 
-O corpo é branco (pintura epóxi) ou aço inox. A cor do refil adesivo ainda
-precisa ser confirmada — tipicamente esses refis são amarelos, o que favorece
-o contraste com os insetos (escuros) e beneficia tanto o baseline OpenCV
-quanto o modelo treinado.
+**O refil adesivo é branco.** O corpo da armadilha também é branco, em pintura
+epóxi, ou aço inox.
+
+### Consequência favorável
+
+O contraste entre insetos (escuros) e a superfície (branca) é o máximo
+possível. Isso beneficia tanto o modelo treinado quanto o baseline OpenCV,
+que pode operar por limiar de luminosidade em vez de matiz.
+
+### Consequência desfavorável — risco técnico
+
+**A placa é branca e a moldura ao redor também é branca.**
+
+Isso afeta diretamente a segmentação em três classes definida em
+`../model/modelo_spec.md`, seção 2. Duas das três classes — `fundo`, que
+inclui a moldura, e `placa_limpa` — têm praticamente a mesma cor. O modelo não
+pode separá-las por cor; precisa aprender pela **geometria e pelo contexto
+espacial**: a placa é o retângulo interno, a moldura o que a circunda.
+
+Uma U-Net consegue aprender isso, pois seu campo receptivo captura contexto
+amplo. Mas é um aprendizado mais difícil do que seria com cores distintas, e
+tem duas implicações obrigatórias:
+
+| Implicação | Detalhe |
+|---|---|
+| Dataset sintético | Deve incluir a moldura branca ao redor da placa, com variação de proporção e enquadramento. Sem isso o modelo nunca aprende a distinguir |
+| Verificação de área mínima | A regra de 5% definida em `../model/modelo_spec.md`, seção 3.1, ganha importância — ela é o que detecta o caso em que o modelo confunde moldura com placa |
+
+**Sujeira acumulada:** superfícies brancas evidenciam poeira e resíduo. O
+gabarito precisa definir se sujeira sem inseto conta como área coberta. A
+posição adotada é que conta, pois reduz a eficácia adesiva da mesma forma —
+mas isso precisa estar refletido na geração sintética.
 
 ---
 
 # 4. Pendências
 
-- [ ] Confirmar a cor do refil adesivo
 - [ ] Obter fotos reais do equipamento em uso, em diferentes níveis de
       saturação
 - [ ] Definir posição e especificação da câmera (resolução, distância,

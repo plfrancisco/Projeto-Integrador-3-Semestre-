@@ -191,7 +191,7 @@ frontend não faz esse cálculo, conforme `../frontend/telas_spec.md`, seção 5
 |---|---|
 | `refil_ativo` | Armadilha sem refil ativo |
 | `percentual_atual`, `status`, `ultima_analise_em` | Nenhuma análise no refil ativo |
-| `dias_ate_saturar` | Menos de duas análises, ou taxa não positiva |
+| `dias_ate_saturar` | Menos de duas análises, ou inclinação não positiva |
 | `em_alerta_desde` | Armadilha não está em estado `trocar` |
 
 **Sobre `em_alerta_desde`:** data da primeira análise do refil ativo cujo

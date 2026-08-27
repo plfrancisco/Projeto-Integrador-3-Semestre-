@@ -116,13 +116,18 @@ O limite não decorre de convenção de aprendizado de máquina, e sim do
 consumidor mais exigente do resultado: a projeção de dias até saturar,
 definida em `../frontend/telas_spec.md`, seção 5.
 
-A projeção calcula a taxa de saturação a partir da diferença entre medições.
-Com ruído de ±10 pp, duas leituras de 30% e 50% separadas por sete dias — taxa
-real de 2,9 pp por dia — poderiam corresponder a uma taxa nula ou ao dobro da
-real. A projeção perderia qualquer utilidade.
+A projeção estima a taxa de saturação por regressão linear sobre as medições
+do refil ativo. Com ruído de ±10 pp, duas leituras de 30% e 50% separadas por
+sete dias — taxa real de 2,9 pp por dia — poderiam corresponder a uma taxa
+nula ou ao dobro da real. A projeção perderia qualquer utilidade.
 
-Com ±5 pp, a incerteza da taxa permanece dentro de margem aceitável para uma
-estimativa em dias.
+Com ±5 pp, a incerteza da inclinação permanece dentro de margem aceitável para
+uma estimativa em dias.
+
+A regressão sobre múltiplos pontos, e não sobre apenas o primeiro e o último,
+é parte da mitigação: erros individuais em direções opostas se compensam. As
+duas medidas atuam em conjunto — precisão do modelo e robustez do cálculo — e
+nenhuma delas isoladamente seria suficiente.
 
 ## 4.3 Erro crítico
 

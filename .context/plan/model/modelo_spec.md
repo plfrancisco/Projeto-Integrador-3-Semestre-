@@ -155,9 +155,10 @@ Imagem gerada e persistida no momento da análise, servida por
 | Opacidade | 40% |
 | Formato | PNG |
 
-Magenta foi escolhido porque contrasta com a placa (amarela) e com os insetos
-(escuros). Vermelho se confundiria com regiões escuras, e verde ou amarelo se
-aproximariam da cor da placa.
+Magenta foi escolhido por ser uma cor saturada, ausente da cena real — a placa
+é branca e os insetos são escuros e acinzentados. Qualquer tom neutro se
+confundiria com o próprio conteúdo da imagem; magenta é inequivocamente uma
+marcação do sistema, e não algo presente na armadilha.
 
 A máscara é gerada uma vez e armazenada, não recalculada a cada visualização —
 a tela de detalhe exibe várias miniaturas simultaneamente.
@@ -200,7 +201,7 @@ Implementação clássica para comparação, conforme
 
 | Item | Definição |
 |---|---|
-| Método | Segmentação por limiar em espaço HSV |
+| Método | Limiar de luminosidade — canal V do espaço HSV |
 | Entrada | Mesma imagem pré-processada da seção 4 |
 | Saída | Mesmo formato do modelo — percentual e status |
 | Execução | Offline, em notebook de avaliação |
@@ -208,8 +209,34 @@ Implementação clássica para comparação, conforme
 O baseline **não é exposto pela API**. Serve à comparação metodológica no
 relatório, não ao uso operacional.
 
-Os limiares HSV dependem da cor real do refil, ainda não confirmada. A
-calibração faz parte da implementação do baseline.
+## 7.1 Método
+
+Como o refil é branco e os insetos são escuros, a separação por luminosidade é
+direta: pixels abaixo de um limiar de brilho são considerados cobertos.
+
+O limiar é calibrado sobre o conjunto de treino, não escolhido arbitrariamente
+— usar um valor arbitrário tornaria a comparação injusta com o modelo
+treinado.
+
+## 7.2 Limitação conhecida e esperada
+
+O baseline **não consegue delimitar a placa**. A moldura da armadilha também é
+branca, e o limiar de luminosidade não distingue uma superfície branca da
+outra.
+
+Consequências:
+
+- o baseline exige que a imagem esteja recortada na placa;
+- ele não reproduz a segmentação em três classes;
+- sob variação de iluminação, sombras na moldura são classificadas como área
+  coberta.
+
+Essa limitação **não é um defeito da implementação — é o resultado esperado**,
+e constitui justamente o argumento a favor do modelo treinado. Deve ser
+medida e reportada, não contornada.
+
+Ajustar o baseline até que ele supere a própria limitação descaracterizaria a
+comparação.
 
 ---
 
@@ -233,7 +260,6 @@ parcial ou valor padrão. O tratamento é responsabilidade do endpoint, conforme
 
 # 9. Pendências
 
-- [ ] Calibrar limiares HSV do baseline após confirmação da cor do refil
 - [ ] Revisar resolução de entrada após a primeira avaliação de métricas
 
 ---

@@ -180,27 +180,68 @@ não é óbvia para quem usa.
 O valor exibido no dashboard é calculado no backend, não no frontend — é
 regra de negócio.
 
-**Método do MVP:** taxa linear simples sobre as análises do refil ativo.
+**Método:** regressão linear sobre **todas** as análises do refil ativo.
 
 ```text
-taxa_diaria = (percentual_atual − percentual_inicial) / dias_decorridos
-dias_ate_saturar = (LIMIAR_TROCAR − percentual_atual) / taxa_diaria
+Ajusta a reta:  percentual = a × dias + b
+                sobre todos os pares (dias_desde_instalacao, percentual)
+
+Resolve para o limiar:  dias_previstos = (LIMIAR_TROCAR − b) / a
+
+dias_ate_saturar = dias_previstos − dias_decorridos
 ```
 
-Onde `LIMIAR_TROCAR` é 70%, conforme
+Onde `LIMIAR_TROCAR` é 70, conforme
 `../foundation/project_overview.md`, seção 7.2.
 
-**Casos em que a estimativa não é calculada:**
+## 5.1 Por que regressão e não dois pontos
+
+A alternativa mais simples seria calcular a taxa entre a primeira e a última
+análise. Foi rejeitada por ser **o método mais sensível a erro de medição**:
+descarta todas as leituras intermediárias e depende inteiramente de dois
+valores.
+
+Considere uma armadilha que realmente vai de 30% para 50% em sete dias — taxa
+de aproximadamente 2,9 pontos por dia, saturando em cerca de sete dias. Com
+erro de medição de ±10 pontos e apenas dois pontos considerados:
+
+| Leitura obtida | Dia 1 | Dia 8 | Projeção resultante |
+|---|---|---|---|
+| Desfavorável A | 40% | 40% | Não satura |
+| Desfavorável B | 20% | 60% | Satura em 2 dias |
+
+A mesma realidade produz respostas que vão de "nunca" a "depois de amanhã".
+
+Com regressão sobre dez medições, erros individuais em direções opostas se
+compensam, e a inclinação estimada é substancialmente mais estável. O custo é
+uma chamada de ajuste linear.
+
+Isso importa porque o critério de precisão do modelo, definido em
+`../model/avaliacao_spec.md`, seção 4.2, foi estabelecido **em função desta
+projeção**. Exigir precisão do modelo para compensar um cálculo frágil seria
+transferir o problema para o lugar errado.
+
+## 5.2 Casos em que a estimativa não é calculada
 
 | Condição | Retorno |
 |---|---|
-| Menos de duas análises no refil ativo | Nulo — sem base para calcular taxa |
-| Taxa menor ou igual a zero | Nulo — armadilha não está enchendo |
-| Percentual já acima do limiar | Zero — já deve ser trocada |
+| Menos de duas análises no refil ativo | Nulo — sem base para ajustar reta |
+| Inclinação menor ou igual a zero | Nulo — armadilha não está enchendo |
+| Percentual atual acima do limiar | Zero — já deve ser trocada |
+| `dias_previstos` anterior à data atual | Zero — mesma situação |
 
-Regressão linear ou modelos de projeção mais elaborados ficam fora do escopo
-do MVP. A taxa simples é suficiente para demonstrar o conceito e não introduz
-dependência estatística adicional.
+Com exatamente duas análises, a regressão coincide com a reta entre os dois
+pontos. O ganho aparece a partir da terceira, e cresce com o número de
+medições.
+
+## 5.3 Percentual exibido
+
+O valor apresentado como percentual atual é sempre a **última medição real**,
+nunca o valor estimado pela reta ajustada.
+
+A regressão serve para estimar a tendência, não para corrigir a medição. Exibir
+um valor calculado no lugar do medido confundiria o usuário ao comparar com a
+lista de análises logo abaixo, na mesma tela.
 
 ---
 
