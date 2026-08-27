@@ -330,7 +330,7 @@ conversão ocorre apenas na camada de apresentação.
 ## 8.3 Máscara sobreposta
 
 Gerada pelo backend e recebida pronta, conforme
-`../model/modelo_spec.md`, seção 5.1 — magenta a 40% de opacidade sobre a
+`../model/modelo_spec.md`, seção 7.1 — magenta a 40% de opacidade sobre a
 imagem original.
 
 O frontend exibe original e máscara lado a lado, sem processamento próprio.

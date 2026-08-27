@@ -28,42 +28,6 @@ O modelo produz segmentação de **três classes**, não binária:
 | `placa_limpa` | 1 | Superfície adesiva sem insetos, **incluindo áreas com sujeira** |
 | `placa_coberta` | 2 | Superfície adesiva ocupada por **insetos** |
 
-## 2.0 Definição de área coberta
-
-**Área coberta é exclusivamente área ocupada por insetos.** Poeira, resíduo,
-manchas e sujeira em geral pertencem à classe `placa_limpa`, ainda que sejam
-visualmente escuros.
-
-### Justificativa
-
-O que o produto mede é a **capacidade restante de captura**, não o estado
-estético da superfície. Uma armadilha instalada em ambiente empoeirado
-acumularia sujeira sem capturar insetos; se sujeira contasse como cobertura, o
-sistema recomendaria a troca de um refil ainda plenamente funcional.
-
-A métrica passaria a medir contaminação ambiental em vez de desempenho da
-armadilha — e desempenho é o que a empresa entrega ao cliente.
-
-### Consequência técnica
-
-Insetos e sujeira são, ambos, regiões escuras sobre fundo branco. A distinção
-**não pode ser feita por cor ou brilho**; depende de forma, textura e
-morfologia — insetos têm contorno definido e estrutura reconhecível, sujeira é
-amorfa e difusa.
-
-Isso impõe duas exigências:
-
-| Exigência | Detalhe |
-|---|---|
-| Dataset sintético | Deve conter sujeira como **distrator** — presente na imagem, ausente da máscara. Sem exemplos negativos, o modelo classificará qualquer mancha escura como inseto |
-| Anotação de fotos reais | O gabarito precisa de critério explícito para casos ambíguos, como fragmentos de inseto ou aglomerados com poeira |
-
-Esta é também a limitação central do baseline por luminosidade — ver seção 7.2.
-
-**Nomenclatura:** os identificadores `placa_coberta` e `percentual_coberto`
-permanecem, mas seu significado é o definido acima. "Coberta" refere-se
-sempre a cobertura por insetos.
-
 ## 2.2 Justificativa
 
 A alternativa seria segmentação binária (coberto vs. não coberto), assumindo
@@ -89,7 +53,158 @@ a classe `fundo`.
 
 ---
 
-# 3. Cálculo do percentual
+# 3. Definição de área coberta
+
+**Área coberta é exclusivamente área ocupada por insetos ou fragmentos de
+insetos.** Sujeira, resíduo e manchas pertencem à classe `placa_limpa`, ainda
+que sejam visualmente escuros.
+
+## 3.1 Justificativa
+
+O produto mede a **capacidade restante de captura**, não o estado estético da
+superfície. Uma armadilha instalada em ambiente empoeirado acumularia sujeira
+sem capturar insetos; se sujeira contasse, o sistema recomendaria a troca de um
+refil ainda plenamente funcional.
+
+A métrica passaria a medir contaminação ambiental em vez de desempenho da
+armadilha — e desempenho é o que a empresa entrega ao cliente.
+
+## 3.2 Taxonomia
+
+Classificação de tudo que pode aparecer sobre a superfície adesiva.
+
+### Conta como `placa_coberta`
+
+| Item | Observação |
+|---|---|
+| Mosquitos e moscas | Alvo principal |
+| Insetos grandes — mariposas, besouros, vespas | Ocupam área desproporcional; uma mariposa equivale a dezenas de mosquitos |
+| Insetos muito pequenos — drosófilas, formigas aladas | Relevantes em açougue e hortifrúti; ocupam poucos pixels na resolução de entrada |
+| **Fragmentos** — asas soltas, pernas, corpos parciais | Ocupam a cola e reduzem a captura como um inseto inteiro. Regra deliberadamente simples, para manter consistência entre anotadores |
+| Insetos sobrepostos | Ver regra de união na seção 3.3 |
+
+### Conta como `placa_limpa`
+
+| Item | Contexto em que aparece |
+|---|---|
+| Poeira e sujeira | Qualquer ambiente |
+| Gordura aerossolizada | Açougue e cozinha; forma película que amarela a superfície |
+| Respingos de sangue ou líquidos | Açougue |
+| **Teia de aranha** | Comum em armadilhas adesivas; não é captura |
+| Pelos, fibras e penas | Objetos escuros e alongados, mas não são insetos |
+| Marcações impressas do refil | Logotipo ou texto do fabricante, se houver |
+| Vinco, dobra ou rasgo do refil | Artefato de instalação |
+| Bolhas de ar sob o adesivo | Artefato de instalação |
+
+### Não pertence à placa — classe `fundo`
+
+Moldura da armadilha, parede, lâmpadas visíveis e qualquer elemento do
+ambiente.
+
+## 3.3 Regra de sobreposição
+
+Quando insetos se sobrepõem, a área coberta é a **união** das regiões, nunca a
+soma das áreas individuais.
+
+Somar áreas individuais infla o gabarito, e o erro cresce com a densidade —
+justamente nas placas próximas da saturação, onde a medição precisa ser
+confiável. Na geração sintética, a máscara deve ser composta por união de
+silhuetas, não por acúmulo.
+
+## 3.4 Consequências técnicas
+
+Insetos e sujeira são, ambos, regiões escuras sobre fundo branco. A distinção
+**não pode ser feita por cor ou brilho**; depende de forma, textura e
+morfologia — insetos têm contorno definido e estrutura reconhecível, sujeira é
+amorfa e difusa.
+
+| Exigência | Detalhe |
+|---|---|
+| Dataset sintético | Deve conter sujeira, teia, pelos e respingos como **distratores** — presentes na imagem, ausentes da máscara. Sem exemplos negativos, o modelo classificará qualquer mancha escura como inseto |
+| Anotação de fotos reais | Segue a taxonomia da seção 3.2. Casos não previstos devem ser registrados e a taxonomia atualizada, nunca decididos individualmente pelo anotador |
+
+Esta é também a limitação central do baseline por luminosidade — ver seção 9.2.
+
+**Nomenclatura:** os identificadores `placa_coberta` e `percentual_coberto`
+permanecem, mas seu significado é o definido nesta seção. "Coberta" refere-se
+sempre a cobertura por insetos.
+
+---
+
+# 4. Condições visuais a tolerar
+
+Fenômenos ópticos presentes nas fotos reais que o modelo precisa suportar. Todos
+devem estar representados no dataset sintético.
+
+| Condição | Origem | Risco se ausente do treino |
+|---|---|---|
+| **Dominante de cor azul-violeta** | Iluminação BL UVA | Ver seção 4.1 |
+| **Amarelamento do adesivo** | Exposição contínua à luz UV | Ver seção 4.2 |
+| **Reflexo especular** | As três lâmpadas ficam próximas à superfície | Região estourada pode ser lida como buraco na placa |
+| Sombra da moldura sobre a placa | Geometria da armadilha | Região escura interpretada como inseto |
+| Gradiente de iluminação | Lâmpadas pontuais, não difusas | Um lado da placa sistematicamente mais escuro |
+| Desfoque e ruído | Limitação da câmera | |
+
+## 4.1 A placa não é branca na imagem
+
+Embora o refil seja fisicamente branco, **a câmera não o registra como
+branco**. As lâmpadas BL UVA emitem radiação UV-A acompanhada de faixa visível
+violeta-azulada, e uma superfície branca reflete o que recebe.
+
+Três fatores tornam a cor registrada imprevisível:
+
+| Fator | Efeito |
+|---|---|
+| Dominante violeta-azulado | A placa aparece azulada ou violácea, não branca |
+| **Fluorescência** | Adesivos e papéis costumam conter branqueadores ópticos, que emitem luz visível sob UV — a superfície pode aparecer mais clara e saturada do que sob luz comum |
+| **Balanço de branco automático** | A câmera tenta compensar o dominante; o resultado varia conforme o modelo do equipamento e o conteúdo do quadro |
+| Luz ambiente concorrente | A iluminação do estabelecimento se mistura à UV em proporção variável ao longo do dia |
+
+### Consequência para o modelo
+
+**A cor absoluta não pode ser usada como característica.** Um modelo que
+aprenda "placa é a região branca" falhará sistematicamente.
+
+O que permanece estável é a **relação de luminância**: a placa é mais clara que
+os insetos, qualquer que seja o dominante de cor.
+
+### Exigências
+
+| Exigência | Detalhe |
+|---|---|
+| Dataset sintético | Variação agressiva de dominante de cor e temperatura, cobrindo desde forte dominante violeta até imagem corrigida pelo balanço de branco |
+| Augmentation | Jitter de matiz, saturação e balanço de canais durante o treino |
+| Baseline | Opera sobre o canal V (luminosidade) do HSV, não sobre matiz — escolha que já o torna tolerante ao dominante de cor |
+
+### Recomendação para a instalação
+
+Fixar o balanço de branco da câmera, em vez de deixá-lo automático. Uma cor
+consistentemente deslocada é preferível a uma cor que varia de forma
+imprevisível entre capturas: o modelo aprende a lidar com viés constante, mas
+não com viés aleatório.
+
+Registrado como pendência de especificação da câmera em
+`../foundation/hardware_armadilha.md`.
+
+## 4.2 Amarelamento — risco de correlação espúria
+
+O adesivo exposto a luz UV amarela progressivamente. Um refil com 40 dias de
+uso **não é mais branco**.
+
+Isso cria um risco específico: o amarelamento e o percentual de cobertura
+crescem juntos ao longo do ciclo do refil. Se o dataset sintético usar sempre
+placa branca, o modelo pode aprender a associar tom amarelado a algo que não
+existiu no treino — ou, pior, se o amarelamento aparecer sempre junto de alta
+cobertura, o modelo pode aprender a **inferir cobertura a partir da cor de
+fundo**, em vez de detectar insetos.
+
+Mitigação obrigatória: variar o tom da placa de branco a amarelado de forma
+**independente** do percentual de cobertura. Placas amareladas com pouca
+cobertura e placas brancas com muita cobertura precisam existir no dataset.
+
+---
+
+# 5. Cálculo do percentual
 
 ```text
 area_placa    = pixels(placa_limpa) + pixels(placa_coberta)
@@ -98,7 +213,7 @@ area_coberta  = pixels(placa_coberta)
 percentual_coberto = (area_coberta / area_placa) × 100
 ```
 
-## 3.1 Regras
+## 5.1 Regras
 
 | Regra | Definição |
 |---|---|
@@ -112,7 +227,7 @@ ruído disperso em vez de localizar a placa. Sem essa verificação, uma detecç
 falha produziria um percentual aparentemente válido, calculado sobre uma área
 que não é a placa.
 
-## 3.2 Derivação do status
+## 5.2 Derivação do status
 
 Aplicada sobre `percentual_coberto`, conforme
 `../foundation/project_overview.md`, seção 7.2:
@@ -131,7 +246,7 @@ acentuação é aplicada apenas na exibição, pelo frontend.
 
 ---
 
-# 4. Pré-processamento
+# 6. Pré-processamento
 
 Sequência exata aplicada a toda imagem antes da inferência:
 
@@ -148,7 +263,7 @@ media  = [0.485, 0.456, 0.406]
 desvio = [0.229, 0.224, 0.225]
 ```
 
-## 4.1 Sobre a resolução
+## 6.1 Sobre a resolução
 
 768 × 576 mantém proporção 4:3, compatível com o enquadramento típico de
 câmera, e ambas as dimensões são divisíveis por 32 — requisito da U-Net, que
@@ -169,7 +284,7 @@ segmentadas — a distorção afeta numerador e denominador igualmente.
 
 ---
 
-# 5. Pós-processamento
+# 7. Pós-processamento
 
 | Ordem | Operação |
 |---|---|
@@ -178,7 +293,7 @@ segmentadas — a distorção afeta numerador e denominador igualmente.
 | 3 | Cálculo do percentual conforme seção 3 |
 | 4 | Geração da imagem de máscara sobreposta |
 
-## 5.1 Máscara sobreposta
+## 7.1 Máscara sobreposta
 
 Imagem gerada e persistida no momento da análise, servida por
 `GET /api/analises/{id}/mascara`.
@@ -201,7 +316,7 @@ a tela de detalhe exibe várias miniaturas simultaneamente.
 
 ---
 
-# 6. Carregamento dos pesos
+# 8. Carregamento dos pesos
 
 | Item | Definição |
 |---|---|
@@ -216,7 +331,7 @@ primeira requisição, a aplicação subiria aparentemente saudável e só revel
 o problema quando alguém tentasse analisar uma imagem — provavelmente durante
 a apresentação.
 
-## 6.1 Composição de `modelo_versao`
+## 8.1 Composição de `modelo_versao`
 
 Formato `semver+hash`, conforme `../data/data_model.md`, seção 7.2.
 
@@ -230,7 +345,7 @@ O hash é calculado uma vez, na inicialização, e mantido em memória. Resultad
 
 ---
 
-# 7. Baseline OpenCV
+# 9. Baseline OpenCV
 
 Implementação clássica para comparação, conforme
 `../foundation/tech_stack.md`, seção 4.2.
@@ -245,7 +360,7 @@ Implementação clássica para comparação, conforme
 O baseline **não é exposto pela API**. Serve à comparação metodológica no
 relatório, não ao uso operacional.
 
-## 7.1 Método
+## 9.1 Método
 
 Como o refil é branco e os insetos são escuros, a separação por luminosidade é
 direta: pixels abaixo de um limiar de brilho são considerados cobertos.
@@ -254,7 +369,7 @@ O limiar é calibrado sobre o conjunto de treino, não escolhido arbitrariamente
 — usar um valor arbitrário tornaria a comparação injusta com o modelo
 treinado.
 
-## 7.2 Limitações conhecidas e esperadas
+## 9.2 Limitações conhecidas e esperadas
 
 O baseline apresenta duas limitações estruturais, ambas decorrentes de operar
 apenas sobre luminosidade.
@@ -271,7 +386,7 @@ superfície branca da outra. Consequências:
 
 ### Não distingue inseto de sujeira
 
-Conforme a definição da seção 2.0, apenas insetos contam como área coberta.
+Conforme a definição da seção 3, apenas insetos contam como área coberta.
 Um limiar de brilho classifica **qualquer** região escura como coberta,
 incluindo poeira e manchas.
 
@@ -291,7 +406,7 @@ o que o modelo treinado faz.
 
 ---
 
-# 8. Contrato de inferência
+# 10. Contrato de inferência
 
 Interface que o pipeline expõe ao backend:
 
@@ -309,7 +424,7 @@ parcial ou valor padrão. O tratamento é responsabilidade do endpoint, conforme
 
 ---
 
-# 9. Pendências
+# 11. Pendências
 
 - [ ] Revisar resolução de entrada após a primeira avaliação de métricas
 

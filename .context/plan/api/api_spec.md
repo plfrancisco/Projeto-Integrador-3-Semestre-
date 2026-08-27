@@ -87,7 +87,7 @@ podem ser reescritas sem aviso, códigos não.
 | Resolução máxima | Sem limite — a imagem é redimensionada no pré-processamento |
 
 O mínimo de 512 px decorre da resolução de entrada do modelo, definida em
-`../model/modelo_spec.md`, seção 4. Imagens menores seriam ampliadas, sem
+`../model/modelo_spec.md`, seção 6. Imagens menores seriam ampliadas, sem
 ganho real de informação e com perda de precisão na segmentação.
 
 ## 2.5 Modo de execução da inferência

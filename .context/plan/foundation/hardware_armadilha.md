@@ -56,11 +56,20 @@ As três lâmpadas BL UVA de 15 W ficam próximas à superfície adesiva. Isso
 implica:
 
 - iluminação artificial constante e dominante sobre a placa;
-- possível dominância de tom violeta/azulado nas imagens, dependendo de como
-  a câmera captura a luz UV;
-- risco de reflexo ou brilho especular na superfície adesiva;
-- iluminação relativamente controlada, o que é favorável — mas o modelo deve
-  tolerar variação, já que o estabelecimento também tem luz própria.
+- **dominante violeta-azulado nas imagens** — lâmpadas BL UVA emitem UV-A com
+  faixa visível violeta, e a superfície reflete o que recebe;
+- possível fluorescência do adesivo, caso contenha branqueadores ópticos;
+- risco de reflexo ou brilho especular na superfície;
+- gradiente de iluminação, por serem fontes pontuais e próximas;
+- mistura com a luz própria do estabelecimento, em proporção variável.
+
+**Consequência crítica: a placa não é registrada como branca pela câmera.**
+Apesar de ser fisicamente branca, a cor na imagem depende do dominante UV, da
+fluorescência, do balanço de branco da câmera e da luz ambiente concorrente.
+
+O modelo não pode usar cor absoluta como característica — apenas a relação de
+luminância entre placa e insetos é estável. Análise completa em
+`../model/modelo_spec.md`, seção 4.1.
 
 Essas condições devem ser reproduzidas na geração do dataset sintético e na
 augmentation.
@@ -102,7 +111,7 @@ tem duas implicações obrigatórias:
 | Implicação | Detalhe |
 |---|---|
 | Dataset sintético | Deve incluir a moldura branca ao redor da placa, com variação de proporção e enquadramento. Sem isso o modelo nunca aprende a distinguir |
-| Verificação de área mínima | A regra de 5% definida em `../model/modelo_spec.md`, seção 3.1, ganha importância — ela é o que detecta o caso em que o modelo confunde moldura com placa |
+| Verificação de área mínima | A regra de 5% definida em `../model/modelo_spec.md`, seção 5.1, ganha importância — ela é o que detecta o caso em que o modelo confunde moldura com placa |
 
 ### Sujeira acumulada
 
@@ -110,7 +119,7 @@ Superfícies brancas evidenciam poeira e resíduo, o que cria um segundo desafio
 de discriminação.
 
 **Sujeira sem inseto não conta como área coberta** — decisão registrada em
-`../model/modelo_spec.md`, seção 2.0. A métrica mede capacidade de captura, não
+`../model/modelo_spec.md`, seção 3. A métrica mede capacidade de captura, não
 estado estético da superfície.
 
 Isso significa que o modelo precisa separar duas coisas visualmente parecidas:
@@ -130,8 +139,14 @@ falhará em qualquer foto real de refil com algum tempo de uso.
       saturação
 - [ ] Definir posição e especificação da câmera (resolução, distância,
       ângulo)
+- [ ] **Definir balanço de branco fixo na câmera**, em vez de automático —
+      viés de cor constante é tratável pelo modelo, viés variável não
 - [ ] Verificar se o refil tem marcações, logotipo ou bordas impressas que
       possam ser confundidas com insetos pela segmentação
+- [ ] Confirmar se o adesivo apresenta fluorescência sob as lâmpadas UV
+
+**Confirmado:** a placa fica exposta, sem grade, tela ou painel frontal
+obstruindo a superfície.
 
 ---
 

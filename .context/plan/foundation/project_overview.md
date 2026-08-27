@@ -101,7 +101,7 @@ insetos individualmente.
 **Área coberta significa área ocupada por insetos.** Sujeira e poeira não
 contam, ainda que sejam visualmente escuras — a métrica mede capacidade
 restante de captura, não o estado estético da superfície. Definição completa e
-consequências técnicas em `../model/modelo_spec.md`, seção 2.0.
+consequências técnicas em `../model/modelo_spec.md`, seção 3.
 
 - Motivo: mosquitos colados podem se sobrepor/aglomerar, tornando contagem
   individual difícil e propensa a erro. Área coberta é um indicador mais
@@ -168,9 +168,22 @@ Abordagem prevista:
   proporção de 450 × 220 mm do refil real.
 - Sobreposição: insetos recortados ou gerados, posicionados aleatoriamente
   sobre a placa, com variação de quantidade, posição, escala e rotação.
-- Augmentation: variações de iluminação, ângulo e ruído de câmera,
-  reproduzindo as condições descritas em `hardware_armadilha.md`.
 - A máscara é derivada automaticamente das posições dos insetos.
+
+### Requisitos acumulados
+
+As decisões tomadas até aqui impõem exigências específicas ao gerador. Todas
+são obrigatórias e devem constar da especificação do dataset:
+
+| Requisito | Origem |
+|---|---|
+| Incluir a moldura branca ao redor da placa, com variação de enquadramento | Segmentação em três classes — `modelo_spec.md`, seção 2.2 |
+| Incluir sujeira, teia, pelos e respingos como distratores — visíveis na imagem, ausentes da máscara | Sujeira não conta como cobertura — `modelo_spec.md`, seção 3.4 |
+| Compor a máscara por **união** de silhuetas, nunca por soma de áreas | Regra de sobreposição — `modelo_spec.md`, seção 3.3 |
+| Variar dominante de cor de forma agressiva, incluindo forte viés violeta | A placa não é branca na imagem — `modelo_spec.md`, seção 4.1 |
+| Variar o amarelamento da placa **de forma independente** do percentual de cobertura | Risco de correlação espúria — `modelo_spec.md`, seção 4.2 |
+| Incluir reflexo especular, gradiente de iluminação e sombra da moldura | Condições reais — `modelo_spec.md`, seção 4 |
+| Estratificar as amostras por faixa de cobertura | Critérios de avaliação — `../model/avaliacao_spec.md` |
 
 **Pendente:** foto real do refil da empresa parceira como referência visual
 para calibrar a geração sintética.
