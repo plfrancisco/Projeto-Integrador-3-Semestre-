@@ -165,8 +165,11 @@ Três fatores tornam a cor registrada imprevisível:
 **A cor absoluta não pode ser usada como característica.** Um modelo que
 aprenda "placa é a região branca" falhará sistematicamente.
 
-O que permanece estável é a **relação de luminância**: a placa é mais clara que
-os insetos, qualquer que seja o dominante de cor.
+O que permanece **relativamente** estável é a relação de luminância: a placa é
+mais clara que os insetos, qualquer que seja o dominante de cor.
+
+Essa estabilidade tem um limite importante — o contraste diminui conforme a
+placa amarela. Ver seção 4.2.
 
 ### Exigências
 
@@ -186,21 +189,58 @@ não com viés aleatório.
 Registrado como pendência de especificação da câmera em
 `../foundation/hardware_armadilha.md`.
 
-## 4.2 Amarelamento — risco de correlação espúria
+## 4.2 Amarelamento do adesivo
 
-O adesivo exposto a luz UV amarela progressivamente. Um refil com 40 dias de
-uso **não é mais branco**.
+O adesivo exposto continuamente a luz UV amarela de forma progressiva. Um refil
+com 40 dias de uso **não é mais branco**, e a câmera registra essa mudança.
 
-Isso cria um risco específico: o amarelamento e o percentual de cobertura
-crescem juntos ao longo do ciclo do refil. Se o dataset sintético usar sempre
-placa branca, o modelo pode aprender a associar tom amarelado a algo que não
-existiu no treino — ou, pior, se o amarelamento aparecer sempre junto de alta
+O amarelamento produz dois problemas distintos, que exigem mitigações
+diferentes.
+
+### 4.2.1 Perda de contraste sob iluminação UV
+
+Uma superfície amarela **absorve comprimentos de onda curtos** — exatamente a
+faixa violeta-azulada emitida pelas lâmpadas BL UVA. Conforme o adesivo
+amarela, ele passa a absorver a luz que o ilumina.
+
+O efeito não é apenas um deslocamento de matiz: é uma **redução de
+luminância**. A placa fica progressivamente mais escura sob essa iluminação
+específica.
+
+Um segundo fator atua na mesma direção: os branqueadores ópticos que fazem o
+adesivo novo fluorescer também se degradam com a exposição a UV. Um refil
+velho perde o brilho fluorescente que tinha quando novo.
+
+**Consequência:** o contraste entre placa e insetos **diminui ao longo da vida
+do refil**. A discriminação fica mais difícil justamente nos refis próximos da
+saturação — que são os que importam para a decisão de troca.
+
+| Afetado | Impacto |
+|---|---|
+| Dataset sintético | Deve modelar a progressão de tom **e de luminância**, não apenas a mudança de cor |
+| Modelo treinado | Precisa de exemplos com contraste reduzido, sob pena de degradar em refis antigos |
+| Baseline por limiar fixo | Degrada de forma previsível — ver seção 9.2 |
+
+Esse comportamento é derivado das propriedades da iluminação e do material, e
+**deve ser confirmado com fotos reais** de refis em diferentes idades.
+
+### 4.2.2 Risco de correlação espúria
+
+Amarelamento e percentual de cobertura crescem juntos ao longo do ciclo do
+refil — ambos são função do tempo de exposição.
+
+Se no dataset sintético o tom amarelado aparecer sempre acompanhado de alta
 cobertura, o modelo pode aprender a **inferir cobertura a partir da cor de
-fundo**, em vez de detectar insetos.
+fundo**, em vez de detectar insetos. Ele acertaria no conjunto de teste
+sintético e falharia de forma inexplicável em campo — por exemplo, num refil
+antigo de ambiente com pouca infestação.
 
-Mitigação obrigatória: variar o tom da placa de branco a amarelado de forma
-**independente** do percentual de cobertura. Placas amareladas com pouca
-cobertura e placas brancas com muita cobertura precisam existir no dataset.
+**Mitigação obrigatória:** variar tom e luminância da placa de forma
+**estatisticamente independente** do percentual de cobertura. O dataset precisa
+conter placas amareladas com pouca cobertura e placas novas com muita.
+
+As duas mitigações são complementares: a primeira garante que o modelo veja
+contraste reduzido, a segunda garante que ele não use o tom como atalho.
 
 ---
 
@@ -393,6 +433,27 @@ incluindo poeira e manchas.
 O baseline, portanto, **superestima sistematicamente** o percentual em
 superfícies sujas. O erro cresce com o tempo de exposição do refil, justamente
 quando a decisão de troca se torna crítica.
+
+### O limiar fixo perde validade com o tempo
+
+Esta é a limitação mais grave, e decorre da perda de contraste descrita na
+seção 4.2.1.
+
+Um limiar de luminosidade calibrado em refis novos assume determinada
+diferença de brilho entre placa e insetos. Conforme a placa amarela e escurece
+sob a luz UV, essa diferença encolhe — e o mesmo limiar passa a classificar
+região de placa como coberta.
+
+O resultado é uma **superestimação crescente ao longo do ciclo do refil**, que
+se soma ao erro por sujeira. Ambos os erros apontam na mesma direção e ambos
+crescem com o tempo.
+
+Um limiar adaptativo — calculado por imagem, em vez de fixo — mitigaria
+parcialmente o problema. **Não deve ser implementado.** O baseline existe para
+representar a abordagem clássica ingênua; torná-lo adaptativo aproximaria seu
+comportamento do modelo treinado e enfraqueceria a comparação.
+
+A limitação deve ser **medida em função da idade do refil** e reportada.
 
 ### Interpretação
 

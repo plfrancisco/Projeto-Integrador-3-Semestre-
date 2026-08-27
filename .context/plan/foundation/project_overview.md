@@ -181,7 +181,9 @@ são obrigatórias e devem constar da especificação do dataset:
 | Incluir sujeira, teia, pelos e respingos como distratores — visíveis na imagem, ausentes da máscara | Sujeira não conta como cobertura — `modelo_spec.md`, seção 3.4 |
 | Compor a máscara por **união** de silhuetas, nunca por soma de áreas | Regra de sobreposição — `modelo_spec.md`, seção 3.3 |
 | Variar dominante de cor de forma agressiva, incluindo forte viés violeta | A placa não é branca na imagem — `modelo_spec.md`, seção 4.1 |
-| Variar o amarelamento da placa **de forma independente** do percentual de cobertura | Risco de correlação espúria — `modelo_spec.md`, seção 4.2 |
+| Modelar a progressão do amarelamento em **tom e luminância**, reproduzindo a perda de contraste em refis antigos | Amarelamento absorve a luz UV — `modelo_spec.md`, seção 4.2.1 |
+| Variar o amarelamento **de forma estatisticamente independente** do percentual de cobertura | Risco de correlação espúria — `modelo_spec.md`, seção 4.2.2 |
+| Registrar a idade simulada do refil em cada amostra | Análise de erro por idade — `../model/avaliacao_spec.md`, seção 5.1 |
 | Incluir reflexo especular, gradiente de iluminação e sombra da moldura | Condições reais — `modelo_spec.md`, seção 4 |
 | Estratificar as amostras por faixa de cobertura | Critérios de avaliação — `../model/avaliacao_spec.md` |
 

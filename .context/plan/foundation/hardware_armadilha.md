@@ -144,6 +144,9 @@ falhará em qualquer foto real de refil com algum tempo de uso.
 - [ ] Verificar se o refil tem marcações, logotipo ou bordas impressas que
       possam ser confundidas com insetos pela segmentação
 - [ ] Confirmar se o adesivo apresenta fluorescência sob as lâmpadas UV
+- [ ] **Obter fotos de refis em idades diferentes** — necessário para confirmar
+      a perda de contraste por amarelamento descrita em
+      `../model/modelo_spec.md`, seção 4.2.1
 
 **Confirmado:** a placa fica exposta, sem grade, tela ou painel frontal
 obstruindo a superfície.

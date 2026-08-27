@@ -170,16 +170,32 @@ técnica.
 | Subconjunto | O que evidencia |
 |---|---|
 | Variação acentuada de iluminação e ângulo | Sombras na moldura contadas como área coberta pelo baseline |
-| **Refis com sujeira acumulada** | Superestimação sistemática do baseline, que não distingue sujeira de inseto |
+| **Refis com sujeira acumulada** | Superestimação do baseline, que não distingue sujeira de inseto |
+| **Refis amarelados, por idade** | Perda de validade do limiar fixo conforme o contraste diminui |
 
-O segundo subconjunto é o mais relevante. Conforme `modelo_spec.md`, seção
-2.0, sujeira não conta como área coberta — e um limiar de brilho não tem como
-fazer essa distinção. Espera-se que o erro do baseline cresça com o tempo de
-exposição do refil, justamente quando a decisão de troca se torna crítica.
+Os dois últimos são os mais relevantes, e ambos apontam na mesma direção.
 
-Reportar esse comportamento em função do nível de sujeira produz o argumento
-mais forte do relatório: não é que o modelo seja genericamente melhor, é que
-o método clássico falha exatamente na situação que importa.
+Conforme `modelo_spec.md`, seção 3, sujeira não conta como área coberta — e um
+limiar de brilho não tem como fazer essa distinção. Conforme a seção 4.2.1 do
+mesmo documento, a placa escurece com o amarelamento, o que reduz o contraste
+e degrada qualquer limiar calibrado em refis novos.
+
+**Os dois erros são cumulativos e crescem com o tempo de exposição** —
+justamente quando a decisão de troca se torna crítica.
+
+## 5.1 Análise por idade do refil
+
+A comparação deve reportar o erro de ambos os métodos **em função da idade do
+refil**, não apenas como média agregada.
+
+Uma média única esconderia o padrão mais informativo do trabalho: espera-se que
+baseline e modelo tenham desempenho próximo em refis novos e divirjam
+progressivamente conforme o refil envelhece.
+
+Esse gráfico — erro versus idade, duas curvas — é o resultado que sustenta a
+escolha técnica com evidência. O argumento deixa de ser "o modelo é melhor" e
+passa a ser "o método clássico falha exatamente na condição em que a decisão
+importa".
 
 ---
 
