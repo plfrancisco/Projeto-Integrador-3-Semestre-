@@ -162,11 +162,24 @@ e constitui uma seção relevante do relatório final.
 Toda avaliação reporta modelo e baseline OpenCV lado a lado, nas mesmas
 imagens de teste, conforme `../foundation/tech_stack.md`, seção 4.2.
 
-**Condição adicional:** a comparação inclui um subconjunto com variação
-acentuada de iluminação e ângulo. É nessa condição que a diferença entre
-método clássico e modelo treinado se manifesta — em imagens uniformes, o
-threshold de cor tende a apresentar desempenho próximo, o que não sustenta a
-escolha técnica.
+**Condições adicionais obrigatórias:** a comparação inclui subconjuntos
+específicos, porque em imagens limpas e bem iluminadas o baseline tende a
+apresentar desempenho próximo ao do modelo — o que não sustentaria a escolha
+técnica.
+
+| Subconjunto | O que evidencia |
+|---|---|
+| Variação acentuada de iluminação e ângulo | Sombras na moldura contadas como área coberta pelo baseline |
+| **Refis com sujeira acumulada** | Superestimação sistemática do baseline, que não distingue sujeira de inseto |
+
+O segundo subconjunto é o mais relevante. Conforme `modelo_spec.md`, seção
+2.0, sujeira não conta como área coberta — e um limiar de brilho não tem como
+fazer essa distinção. Espera-se que o erro do baseline cresça com o tempo de
+exposição do refil, justamente quando a decisão de troca se torna crítica.
+
+Reportar esse comportamento em função do nível de sujeira produz o argumento
+mais forte do relatório: não é que o modelo seja genericamente melhor, é que
+o método clássico falha exatamente na situação que importa.
 
 ---
 
@@ -188,6 +201,9 @@ métrica final deixa de estimar generalização.
 
 - [ ] Definir volume mínimo de fotos reais para que o teste real seja
       estatisticamente relevante
+- [ ] Definir critério de anotação para casos ambíguos entre inseto e
+      sujeira — fragmentos, insetos parcialmente degradados e aglomerados
+      com poeira aderida
 
 ---
 

@@ -104,10 +104,23 @@ tem duas implicações obrigatórias:
 | Dataset sintético | Deve incluir a moldura branca ao redor da placa, com variação de proporção e enquadramento. Sem isso o modelo nunca aprende a distinguir |
 | Verificação de área mínima | A regra de 5% definida em `../model/modelo_spec.md`, seção 3.1, ganha importância — ela é o que detecta o caso em que o modelo confunde moldura com placa |
 
-**Sujeira acumulada:** superfícies brancas evidenciam poeira e resíduo. O
-gabarito precisa definir se sujeira sem inseto conta como área coberta. A
-posição adotada é que conta, pois reduz a eficácia adesiva da mesma forma —
-mas isso precisa estar refletido na geração sintética.
+### Sujeira acumulada
+
+Superfícies brancas evidenciam poeira e resíduo, o que cria um segundo desafio
+de discriminação.
+
+**Sujeira sem inseto não conta como área coberta** — decisão registrada em
+`../model/modelo_spec.md`, seção 2.0. A métrica mede capacidade de captura, não
+estado estético da superfície.
+
+Isso significa que o modelo precisa separar duas coisas visualmente parecidas:
+insetos e sujeira são, ambos, manchas escuras sobre branco. A distinção depende
+de forma e textura.
+
+**Implicação obrigatória para o dataset sintético:** as imagens geradas devem
+incluir sujeira como distrator — visível na imagem, ausente da máscara. Sem
+exemplos negativos, o modelo aprenderá que toda mancha escura é inseto e
+falhará em qualquer foto real de refil com algum tempo de uso.
 
 ---
 

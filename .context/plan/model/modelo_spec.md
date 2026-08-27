@@ -25,8 +25,44 @@ O modelo produz segmentação de **três classes**, não binária:
 | Classe | Índice | Significado |
 |---|---|---|
 | `fundo` | 0 | Tudo fora da superfície adesiva — moldura da armadilha, parede, ambiente |
-| `placa_limpa` | 1 | Superfície adesiva sem insetos |
-| `placa_coberta` | 2 | Superfície adesiva com insetos ou sujeira |
+| `placa_limpa` | 1 | Superfície adesiva sem insetos, **incluindo áreas com sujeira** |
+| `placa_coberta` | 2 | Superfície adesiva ocupada por **insetos** |
+
+## 2.0 Definição de área coberta
+
+**Área coberta é exclusivamente área ocupada por insetos.** Poeira, resíduo,
+manchas e sujeira em geral pertencem à classe `placa_limpa`, ainda que sejam
+visualmente escuros.
+
+### Justificativa
+
+O que o produto mede é a **capacidade restante de captura**, não o estado
+estético da superfície. Uma armadilha instalada em ambiente empoeirado
+acumularia sujeira sem capturar insetos; se sujeira contasse como cobertura, o
+sistema recomendaria a troca de um refil ainda plenamente funcional.
+
+A métrica passaria a medir contaminação ambiental em vez de desempenho da
+armadilha — e desempenho é o que a empresa entrega ao cliente.
+
+### Consequência técnica
+
+Insetos e sujeira são, ambos, regiões escuras sobre fundo branco. A distinção
+**não pode ser feita por cor ou brilho**; depende de forma, textura e
+morfologia — insetos têm contorno definido e estrutura reconhecível, sujeira é
+amorfa e difusa.
+
+Isso impõe duas exigências:
+
+| Exigência | Detalhe |
+|---|---|
+| Dataset sintético | Deve conter sujeira como **distrator** — presente na imagem, ausente da máscara. Sem exemplos negativos, o modelo classificará qualquer mancha escura como inseto |
+| Anotação de fotos reais | O gabarito precisa de critério explícito para casos ambíguos, como fragmentos de inseto ou aglomerados com poeira |
+
+Esta é também a limitação central do baseline por luminosidade — ver seção 7.2.
+
+**Nomenclatura:** os identificadores `placa_coberta` e `percentual_coberto`
+permanecem, mas seu significado é o definido acima. "Coberta" refere-se
+sempre a cobertura por insetos.
 
 ## 2.2 Justificativa
 
@@ -218,25 +254,40 @@ O limiar é calibrado sobre o conjunto de treino, não escolhido arbitrariamente
 — usar um valor arbitrário tornaria a comparação injusta com o modelo
 treinado.
 
-## 7.2 Limitação conhecida e esperada
+## 7.2 Limitações conhecidas e esperadas
 
-O baseline **não consegue delimitar a placa**. A moldura da armadilha também é
-branca, e o limiar de luminosidade não distingue uma superfície branca da
-outra.
+O baseline apresenta duas limitações estruturais, ambas decorrentes de operar
+apenas sobre luminosidade.
 
-Consequências:
+### Não delimita a placa
 
-- o baseline exige que a imagem esteja recortada na placa;
-- ele não reproduz a segmentação em três classes;
-- sob variação de iluminação, sombras na moldura são classificadas como área
+A moldura da armadilha também é branca, e o limiar de brilho não distingue uma
+superfície branca da outra. Consequências:
+
+- exige que a imagem esteja previamente recortada na placa;
+- não reproduz a segmentação em três classes;
+- sob variação de iluminação, sombras na moldura são contadas como área
   coberta.
 
-Essa limitação **não é um defeito da implementação — é o resultado esperado**,
-e constitui justamente o argumento a favor do modelo treinado. Deve ser
-medida e reportada, não contornada.
+### Não distingue inseto de sujeira
 
-Ajustar o baseline até que ele supere a própria limitação descaracterizaria a
-comparação.
+Conforme a definição da seção 2.0, apenas insetos contam como área coberta.
+Um limiar de brilho classifica **qualquer** região escura como coberta,
+incluindo poeira e manchas.
+
+O baseline, portanto, **superestima sistematicamente** o percentual em
+superfícies sujas. O erro cresce com o tempo de exposição do refil, justamente
+quando a decisão de troca se torna crítica.
+
+### Interpretação
+
+Ambas as limitações **não são defeitos de implementação — são o resultado
+esperado**, e constituem o argumento a favor do modelo treinado. Devem ser
+medidas e reportadas, não contornadas.
+
+Ajustar o baseline até que supere as próprias limitações descaracterizaria a
+comparação: exigiria incorporar análise de forma e contexto, que é exatamente
+o que o modelo treinado faz.
 
 ---
 

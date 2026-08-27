@@ -98,6 +98,11 @@ armadilha inteira. Especificações completas do equipamento em
 Medir percentual de área coberta da superfície adesiva, em vez de contar
 insetos individualmente.
 
+**Área coberta significa área ocupada por insetos.** Sujeira e poeira não
+contam, ainda que sejam visualmente escuras — a métrica mede capacidade
+restante de captura, não o estado estético da superfície. Definição completa e
+consequências técnicas em `../model/modelo_spec.md`, seção 2.0.
+
 - Motivo: mosquitos colados podem se sobrepor/aglomerar, tornando contagem
   individual difícil e propensa a erro. Área coberta é um indicador mais
   direto e robusto de saturação.
