@@ -133,14 +133,43 @@ falhará em qualquer foto real de refil com algum tempo de uso.
 
 ---
 
-# 4. Pendências
+# 4. Câmera de captura
+
+## 4.1 Escopo
+
+Câmera fixa operando 24/7 em campo está **fora do escopo do MVP** (ver
+`project_overview.md`, seção 5.2). As fotos reais necessárias agora —
+diferentes níveis de saturação, diferentes idades de refil — devem ser
+capturadas com celular comum, com exposição e foco travados manualmente
+(modo Pro / AE-AF lock). Não há necessidade de comprar hardware para isso.
+
+## 4.2 Candidata para a Fase 2 (referência, não implementação)
+
+Para a eventual câmera fixa de produção, o candidato de referência é o
+**ESP32-CAM**: módulo com câmera e microcontrolador WiFi integrados,
+programável, baixo custo (~R$ 40–60).
+
+| Requisito | Como o ESP32-CAM atende |
+|---|---|
+| Balanço de branco fixo (seção 3.3) | Configurável via firmware — parâmetro exposto na API da câmera (OV2640), ao contrário de câmeras de consumo com AWB automático não configurável |
+| Exposição fixa | Igualmente configurável via firmware, mesma justificativa |
+| Captura periódica/sob demanda | Fácil de programar (temporizador ou requisição HTTP) |
+| Custo | Compatível com escala de instalação em múltiplas armadilhas |
+
+**Alternativas descartadas para este fim:** câmeras de vigilância disfarçada
+(ex.: modelos "mini spy cam" tipo A9) — feitas para gravação curta e oculta,
+não para operação fixa e configurável; batería pequena, sem controle de
+exposição/balanço de branco, ângulo de visão não documentado.
+
+Esta seção é **referência para planejamento futuro**, não uma decisão de
+compra ou implementação do MVP atual.
+
+---
+
+# 5. Pendências
 
 - [ ] Obter fotos reais do equipamento em uso, em diferentes níveis de
       saturação
-- [ ] Definir posição e especificação da câmera (resolução, distância,
-      ângulo)
-- [ ] **Definir balanço de branco fixo na câmera**, em vez de automático —
-      viés de cor constante é tratável pelo modelo, viés variável não
 - [ ] Confirmar se o adesivo apresenta fluorescência sob as lâmpadas UV
 - [ ] **Obter fotos de refis em idades diferentes** — necessário para confirmar
       a perda de contraste por amarelamento descrita em
