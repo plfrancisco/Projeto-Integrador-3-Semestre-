@@ -60,8 +60,11 @@ deve ser reaberta.
       frontend (React)
 - [ ] Volume Docker para `data/uploads/`
 - [ ] Volume Docker para `models/checkpoints/` (pesos do modelo)
+- [ ] Containers de backend e frontend rodando com usuário não-root
+- [ ] Imagens base mínimas, nenhum segredo copiado em tempo de build
 
-**Especificação:** `../plan/foundation/tech_stack.md`, seção 6.1.
+**Especificação:** `../plan/foundation/tech_stack.md`, seção 6.1;
+`../rules/security_spec.md`, seção 9.1.
 **Dependências:** INFRA01, INFRA02.
 
 **Nota:** o treino do modelo **não** roda em container — GPU passthrough via

@@ -31,9 +31,39 @@ Antes de uma mudança relevante, a IA deve consultar:
 2. `.context/plan/foundation/project_overview.md`
 3. a especificação do domínio afetado em `.context/plan/`
 4. estas regras
-5. os arquivos reais relacionados à solicitação
+5. `.context/rules/security_spec.md`, quando a mudança tocar entrada de
+   usuário, upload, autenticação, banco de dados ou dependências
+6. a skill especializada aplicável em `.agents/skills/`, quando existir uma
+   para o domínio da mudança (ver seção 3.1)
+7. os arquivos reais relacionados à solicitação
 
 A IA não deve considerar uma estrutura planejada como implementada.
+
+## 3.1 Skills especializadas (`.agents/skills/`)
+
+Pasta local, fora do controle de versão (ver `.gitignore`), com conhecimento
+especializado de terceiros para apoiar o desenvolvimento em domínios
+específicos — não é documentação normativa do projeto e não substitui as
+specs em `.context/plan/`. Quando presente, consultar antes de alterar
+código no domínio correspondente:
+
+| Domínio | Skill recomendada |
+|---|---|
+| Backend (FastAPI) | `fastapi` — rotas, dependências, validação com Pydantic |
+| Persistência (SQLAlchemy) | `sqlalchemy` — sessões, relacionamentos, migrations com Alembic |
+| Frontend (React) | `react-patterns` — hooks, composição, estado |
+| Estilização | `tailwind-ui` |
+| TypeScript | `typescript-strict` |
+| Formulários | `forms-validation` — react-hook-form/zod |
+| Acessibilidade | `accessibility` |
+| Visão computacional | `pytorch` ou `segmentation-models` |
+| Segurança | `security-review` — complementa, não substitui,
+  `.context/rules/security_spec.md` |
+
+A ausência de uma skill instalada não bloqueia o trabalho — as specs em
+`.context/plan/` e este documento continuam sendo a fonte normativa. A skill
+apenas acelera a aplicação de boas práticas já estabelecidas na comunidade
+para aquela tecnologia.
 
 ---
 

@@ -22,6 +22,10 @@ inicialmente o **stub de inferência** (API04) — a substituição pela
 inferência real é responsabilidade de `current_task_modelo.md` (ML07), não
 desta task.
 
+**Leitura obrigatória adicional:** `../rules/security_spec.md` — em
+especial as seções 4 (upload), 5.1 (SQL) e 8 (tratamento de erro), que se
+aplicam diretamente aos endpoints desta task.
+
 ---
 
 # 3. Tarefas
@@ -96,6 +100,9 @@ deve ser reaberta sem motivo novo.
       imagem, executa inferência (via stub, API04), persiste análise
 - [ ] Falha na inferência não persiste registro parcial e remove a imagem
       gravada
+- [ ] Validação de upload conforme `../rules/security_spec.md`, seção 4 —
+      tipo real do arquivo (não extensão), limite de dimensões decodificadas,
+      nome de arquivo gerado no servidor (nunca o do cliente)
 
 **Especificação:** `../plan/api/api_spec.md`, seção 6.1.
 **Dependências:** API03, API04.
