@@ -64,7 +64,7 @@ deve ser reaberta.
 - [ ] Imagens base mínimas, nenhum segredo copiado em tempo de build
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seção 6.1;
-`../rules/security_spec.md`, seção 9.1.
+`../rules/security_spec.md`, seções 3 e 10.1.
 **Dependências:** INFRA01, INFRA02.
 
 **Nota:** o treino do modelo **não** roda em container — GPU passthrough via

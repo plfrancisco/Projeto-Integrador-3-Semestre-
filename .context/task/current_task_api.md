@@ -23,8 +23,8 @@ inferência real é responsabilidade de `current_task_modelo.md` (ML07), não
 desta task.
 
 **Leitura obrigatória adicional:** `../rules/security_spec.md` — em
-especial as seções 4 (upload), 5.1 (SQL) e 8 (tratamento de erro), que se
-aplicam diretamente aos endpoints desta task.
+especial as seções 3 (nenhum segredo em código), 5 (upload), 6.1 (SQL) e 9
+(tratamento de erro), que se aplicam diretamente aos endpoints desta task.
 
 ---
 
@@ -100,7 +100,7 @@ deve ser reaberta sem motivo novo.
       imagem, executa inferência (via stub, API04), persiste análise
 - [ ] Falha na inferência não persiste registro parcial e remove a imagem
       gravada
-- [ ] Validação de upload conforme `../rules/security_spec.md`, seção 4 —
+- [ ] Validação de upload conforme `../rules/security_spec.md`, seção 5 —
       tipo real do arquivo (não extensão), limite de dimensões decodificadas,
       nome de arquivo gerado no servidor (nunca o do cliente)
 
