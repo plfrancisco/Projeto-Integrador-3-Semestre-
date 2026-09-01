@@ -21,6 +21,10 @@ Cobre ambiente Python, estrutura de pastas e Docker Compose. Não cobre
 código de aplicação (backend, frontend, modelo) nem o pipeline de treino,
 que roda fora do Docker por decisão registrada em `tech_stack.md`, seção 6.1.
 
+**Pré-requisito:** `current_task_ambiente.md` concluída pela pessoa que vai
+executar esta task — pré-requisitos de software instalados antes de
+inicializar qualquer coisa aqui.
+
 ---
 
 # 3. Tarefas

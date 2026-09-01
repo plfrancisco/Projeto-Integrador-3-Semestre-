@@ -22,6 +22,7 @@ outra especialidade, mesmo quando há dependência entre elas — a dependência
 
 | Arquivo | Estado | Especialidade |
 |---|---|---|
+| `current_task_ambiente.md` | ATIVA | Pré-requisito de todas as demais — configuração local de cada integrante |
 | `current_task_infra.md` | ATIVA | Ambiente Python, estrutura de pastas, Docker Compose |
 | `current_task_banco.md` | ATIVA | Migration, entidades ORM, regra de integridade do refil ativo |
 | `current_task_api.md` | ATIVA | Backend FastAPI — 8 endpoints e stub de inferência |
@@ -43,8 +44,10 @@ Não podem ser alterados sem autorização explícita.
 
 1. `.context/rules/ai_development_rules.md`
 2. documentos normativos em `.context/plan/`
-3. arquivo de task **ativo** da especialidade em questão
-4. arquivos históricos, somente para contexto
+3. `current_task_ambiente.md` — nenhuma outra task deve ser iniciada antes
+   desta estar concluída pelo integrante em questão
+4. arquivo de task **ativo** da especialidade em questão
+5. arquivos históricos, somente para contexto
 
 Conflito entre task e documento normativo deve ser apresentado ao usuário e
 corrigido antes da implementação.
