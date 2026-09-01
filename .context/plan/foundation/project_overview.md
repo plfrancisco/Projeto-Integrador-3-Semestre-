@@ -195,8 +195,12 @@ são obrigatórias e devem constar da especificação do dataset:
 | Incluir reflexo especular, gradiente de iluminação e sombra da moldura | Condições reais — `modelo_spec.md`, seção 4 |
 | Estratificar as amostras por faixa de cobertura | Critérios de avaliação — `../model/avaliacao_spec.md` |
 
+Especificação completa do gerador — fonte dos sprites de inseto, composição,
+metadados, estratificação e critérios de aceite — em `../data/dataset_sintetico.md`.
+
 **Pendente:** foto real do refil da empresa parceira como referência visual
-para calibrar a geração sintética.
+para calibrar a geração sintética (detalhado em `dataset_sintetico.md`,
+seção 8).
 
 ## 8.2 Fase 2 — Dados reais
 
@@ -221,9 +225,9 @@ Após obtenção de material da empresa parceira:
 
 # 10. Pendências
 
-- [ ] Especificar a geração do dataset sintético
 - [ ] Confirmar limiares de classificação com dados reais
-- [ ] Obter foto real do refil para calibrar a geração sintética
+- [ ] Obter foto real do refil para calibrar a geração sintética (ver
+      `../data/dataset_sintetico.md`, seção 8)
 - [ ] Definir integrantes do grupo e divisão de responsabilidades
 - [ ] Definir prazo de entrega
 

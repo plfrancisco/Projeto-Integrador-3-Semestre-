@@ -46,6 +46,7 @@ plan/
 | Fundação | `foundation/stakeholder_evidencias.md` | Contato real com a empresa parceira, evidências confirmadas e hipóteses ainda não validadas |
 | Dados | `data/data_model.md` | Modelo de dados, entidades e regras de persistência |
 | Dados | `data/seed_demo.md` | Cenários de dados para a apresentação |
+| Dados | `data/dataset_sintetico.md` | Geração do dataset sintético — fonte de sprites, composição, metadados, critérios de aceite |
 | Modelo | `model/modelo_spec.md` | Classes de segmentação, pré-processamento, cálculo do percentual e carregamento de pesos |
 | Modelo | `model/avaliacao_spec.md` | Divisão dos conjuntos, métricas e critérios de aprovação |
 | Frontend | `frontend/telas_spec.md` | Telas, conteúdo e comportamento esperado |
