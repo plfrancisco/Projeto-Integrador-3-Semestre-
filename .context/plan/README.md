@@ -43,6 +43,7 @@ plan/
 | Fundação | `foundation/proposta_individual.md` | Proposta individual de solução (formulário acadêmico) |
 | Fundação | `foundation/tech_stack.md` | Stack tecnológica, estrutura de pastas e decisões de ferramentas |
 | Fundação | `foundation/hardware_armadilha.md` | Especificações do equipamento real (StickFly K-45) e implicações para a visão computacional |
+| Fundação | `foundation/stakeholder_evidencias.md` | Contato real com a empresa parceira, evidências confirmadas e hipóteses ainda não validadas |
 | Dados | `data/data_model.md` | Modelo de dados, entidades e regras de persistência |
 | Dados | `data/seed_demo.md` | Cenários de dados para a apresentação |
 | Modelo | `model/modelo_spec.md` | Classes de segmentação, pré-processamento, cálculo do percentual e carregamento de pesos |

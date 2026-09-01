@@ -14,6 +14,12 @@ para saber quando cada armadilha está saturada e precisa de troca. Esse
 processo é impreciso: a troca pode ocorrer cedo demais (desperdício) ou tarde
 demais (armadilha saturada perde eficácia).
 
+**Evidência real (relato do contato na empresa parceira — ver seção 2):** a
+ausência de critério objetivo gera custo duplo — deslocamento da equipe
+técnica para trocas antecipadas desnecessárias, e material (refil) descartado
+antes do fim de sua vida útil. Valores exatos ainda não foram levantados;
+detalhamento em `stakeholder_evidencias.md`.
+
 ---
 
 # 2. Público-alvo
@@ -21,9 +27,11 @@ demais (armadilha saturada perde eficácia).
 - Empresas que vendem/distribuem armadilhas adesivas de mosquito.
 - Donos de estabelecimentos (mercados, açougues, etc.) que usam as armadilhas.
 
-**Empresa parceira real:** existe contato com empresa do ramo para validação
-futura e fornecimento de dados reais. O equipamento de referência é o
-StickFly K-45 — ver `hardware_armadilha.md`.
+**Empresa parceira real:** contato viabilizado por um integrante da equipe
+(Gustavo), que é gerente na empresa parceira — nome mantido em sigilo a
+pedido do grupo. O equipamento de referência é o StickFly K-45 — ver
+`hardware_armadilha.md`. Detalhes do stakeholder e evidências coletadas em
+`stakeholder_evidencias.md`.
 
 ---
 
