@@ -1,14 +1,26 @@
-# Projeto Integrador
+# Projeto Integrador — Visão Computacional para Armadilhas Adesivas
 
-Repositório do projeto integrador, organizado com abordagem *spec-driven development*: a documentação de especificação vive em [`docs/`](docs/) e orienta o que será implementado.
+Sistema de visão computacional que analisa imagens de armadilhas adesivas de mosquito e estima automaticamente o nível de saturação (% de área coberta), indicando o momento ideal de troca.
+
+Organizado com abordagem *spec-driven development*: a documentação de especificação vive em [`.context/`](.context/) e orienta o que será implementado.
 
 ## Estrutura
 
-Toda a documentação de especificação vive em `docs/`:
-
-- `docs/overview/` — visão geral e contexto do projeto (problema, objetivo, escopo, requisitos).
-- `docs/data/` — especificação do banco de dados (modelo de dados, entidades, relacionamentos).
-- `docs/ai-rules/` — regras e diretrizes para desenvolvimento assistido por IA neste projeto.
-- `docs/tasks/` — tarefas de implementação derivadas das especificações.
+```
+.context/
+├── plan/                          ← especificações e planejamento
+│   ├── README.md                  ← índice com ordem de leitura
+│   ├── foundation/                ← visão geral, arquitetura e diretrizes
+│   │   ├── project_overview.md
+│   │   └── proposta_individual.md
+│   └── data/                      ← modelo de dados
+│       └── data_model.md
+├── rules/
+│   └── ai_development_rules.md    ← regras de desenvolvimento com IA
+├── task/
+│   ├── README.md                  ← índice de tasks (ativas e históricas)
+│   └── completed/                 ← tasks concluídas
+└── validation/                    ← relatórios de validação/homologação
+```
 
 O código-fonte da implementação será adicionado posteriormente, guiado pelo conteúdo dessas especificações.
