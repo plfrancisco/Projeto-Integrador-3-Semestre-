@@ -16,11 +16,19 @@ task histórica ou futura não autoriza implementação.
 # 2. Fonte canônica
 
 Tasks são organizadas por especialidade — cada arquivo é a única fonte de
-ordem, checkbox e status para seu domínio.
+ordem, checkbox e status para seu domínio. Um arquivo nunca detalha task de
+outra especialidade, mesmo quando há dependência entre elas — a dependência
+é referenciada, nunca duplicada.
 
 | Arquivo | Estado | Especialidade |
 |---|---|---|
-| *(nenhuma task ativa ainda)* | — | — |
+| `current_task_infra.md` | ATIVA | Ambiente Python, estrutura de pastas, Docker Compose |
+| `current_task_banco.md` | ATIVA | Migration, entidades ORM, regra de integridade do refil ativo |
+| `current_task_api.md` | ATIVA | Backend FastAPI — 8 endpoints e stub de inferência |
+| `current_task_frontend.md` | ATIVA | Interface web — as 4 telas do MVP |
+| `current_task_modelo.md` | ATIVA | Especificação de treino, dataset sintético, baseline, treino da U-Net, avaliação |
+| `current_task_seed_demo.md` | ATIVA | Script de seed com os seis cenários de demonstração |
+| `current_task_externo.md` | ATIVA | Material da empresa parceira, entrevista, integrantes e prazo |
 
 ---
 
