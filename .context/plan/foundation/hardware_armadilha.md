@@ -141,8 +141,6 @@ falhará em qualquer foto real de refil com algum tempo de uso.
       ângulo)
 - [ ] **Definir balanço de branco fixo na câmera**, em vez de automático —
       viés de cor constante é tratável pelo modelo, viés variável não
-- [ ] Verificar se o refil tem marcações, logotipo ou bordas impressas que
-      possam ser confundidas com insetos pela segmentação
 - [ ] Confirmar se o adesivo apresenta fluorescência sob as lâmpadas UV
 - [ ] **Obter fotos de refis em idades diferentes** — necessário para confirmar
       a perda de contraste por amarelamento descrita em
@@ -150,6 +148,13 @@ falhará em qualquer foto real de refil com algum tempo de uso.
 
 **Confirmado:** a placa fica exposta, sem grade, tela ou painel frontal
 obstruindo a superfície.
+
+**Confirmado:** o refil é liso, sem marcações, logotipo ou bordas impressas.
+Elimina o risco de viés sistemático na segmentação (mancha escura fixa,
+presente mesmo em refil novo, sendo confundida com inseto). O distrator fixo
+descrito anteriormente não se aplica — os distratores relevantes continuam
+sendo os variáveis: sujeira, teia, pelos e respingos (ver
+`../model/modelo_spec.md`, seção 3.2).
 
 ---
 
