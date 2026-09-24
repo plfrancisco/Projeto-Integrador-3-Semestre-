@@ -31,20 +31,31 @@ inicializar qualquer coisa aqui.
 
 ## INFRA01 — Ambiente Python
 
-- [ ] Inicializar projeto com `uv` e `pyproject.toml`
-- [ ] Gerar lockfile e exportar `requirements.txt` para o build Docker
-- [ ] Configurar Ruff como linter/formatter
+- [x] Inicializar projeto com `uv` e `pyproject.toml`
+- [x] Gerar lockfile e exportar `requirements.txt` para o build Docker
+- [x] Configurar Ruff como linter/formatter
+
+**Status: CONCLUÍDA em 2026-09-24**, aprovada após revisão em duas rodadas.
+Ruff 0.16.8 como única dependência (grupo `dev`); `requires-python =
+">=3.11"` conforme a spec (a primeira versão usava `>=3.14`, corrigida por
+quebrar a instalação de integrantes com Python mais antigo). `requirements.txt`
+sem dependências de aplicação, por ainda não existirem.
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seção 7.
 **Dependências:** nenhuma.
 
 ## INFRA02 — Estrutura de pastas
 
-- [ ] Criar `backend/src/{api,entities,repositories,inference,networks,config}`
-- [ ] Criar `backend/training/`, `backend/migrations/`
-- [ ] Criar `frontend/src/{components,pages,services}`
-- [ ] Criar `data/` e `models/` (fora do versionamento, conforme `.gitignore`)
-- [ ] Criar `notebooks/`
+- [x] Criar `backend/src/{api,entities,repositories,inference,networks,config}`
+- [x] Criar `backend/training/`, `backend/migrations/`
+- [x] Criar `frontend/src/{components,pages,services}`
+- [x] Criar `data/` e `models/` (fora do versionamento, conforme `.gitignore`)
+- [x] Criar `notebooks/`
+
+**Status: CONCLUÍDA em 2026-09-24.** Durante a revisão, o Codex apontou que
+o `.gitignore` não cobria `data/` e `models/` por completo; corrigido com
+`data/*` e `models/*`, mantendo apenas os `.gitkeep`. Sem isso, dataset ou
+material da empresa parceira poderiam ir para o repositório público.
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seção 8.
 **Dependências:** nenhuma.
@@ -56,12 +67,31 @@ deve ser reaberta.
 
 ## INFRA03 — Docker Compose
 
-- [ ] `docker-compose.yml` orquestrando PostgreSQL, backend (FastAPI) e
+- [x] `docker-compose.yml` orquestrando PostgreSQL, backend (FastAPI) e
       frontend (React)
-- [ ] Volume Docker para `data/uploads/`
-- [ ] Volume Docker para `models/checkpoints/` (pesos do modelo)
-- [ ] Containers de backend e frontend rodando com usuário não-root
-- [ ] Imagens base mínimas, nenhum segredo copiado em tempo de build
+- [x] Volume Docker para `data/uploads/`
+- [x] Volume Docker para `models/checkpoints/` (pesos do modelo)
+- [x] Containers de backend e frontend rodando com usuário não-root
+- [x] Imagens base mínimas, nenhum segredo copiado em tempo de build
+
+**Status: CONCLUÍDA em 2026-09-24**, aprovada após revisão.
+
+- **Arquivos:** `docker-compose.yml`, `.env.example` (raiz), `backend/Dockerfile`,
+  `frontend/Dockerfile` e os dois `.dockerignore`.
+- **Segurança:** credenciais do Postgres só via `.env` da raiz, sem valor
+  padrão (o compose recusa subir sem elas); portas presas em `127.0.0.1`;
+  Postgres sem porta publicada; pesos do modelo montados como somente
+  leitura; usuários não-root.
+- **Validado:** `docker compose config`, Postgres `healthy`, build do
+  backend.
+- **Não validável ainda (esperado):** backend permanecer de pé (depende da
+  API01, `src.main:app`) e build do frontend (depende da FE01,
+  `package.json`). A verificação completa é a AMB04.
+- **Desvio aceito:** `POSTGRES_USER=root` é superusuário; ver
+  `current_task_ambiente.md`, AMB02.
+- **Observação:** em hosts Linux, o bind mount `./data/uploads` é criado como
+  root e o usuário `app` do container pode não conseguir gravar. Não afeta
+  Windows/Docker Desktop.
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seção 6.1;
 `../rules/security_spec.md`, seções 3 e 10.1.

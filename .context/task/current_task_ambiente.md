@@ -33,32 +33,82 @@ o ambiente sobe. Não cobre a criação da estrutura de pastas em si
 
 ## AMB01 — Pré-requisitos de software
 
-- [ ] Git instalado
-- [ ] Docker Desktop instalado e em execução
-- [ ] Node.js LTS instalado (para rodar o frontend fora do Docker durante o
+- [x] Git instalado
+- [x] Docker Desktop instalado e em execução
+- [x] Node.js LTS instalado (para rodar o frontend fora do Docker durante o
       desenvolvimento, se necessário)
-- [ ] Python 3.11+ instalado
-- [ ] `uv` instalado (`pip install uv` ou instalador nativo)
+- [x] Python 3.11+ instalado
+- [x] `uv` instalado (`pip install uv` ou instalador nativo)
+
+**Status: CONCLUÍDA em 2026-09-24** (máquina do Pedro Lucas), confirmada
+pelo usuário.
+
+| Ferramenta | Versão verificada |
+|---|---|
+| Git | 2.55.0 |
+| Docker | 29.7.2 (cliente) |
+| Node.js | v24.18.0 |
+| Python | 3.14.6 |
+| uv | 0.12.5 |
+
+- **Docker:** na primeira checagem o motor (daemon) estava parado, e "em
+  execução" foi confirmado pelo usuário. Em nova checagem no mesmo dia
+  (`docker info`), o daemon respondeu (`server 29.7.2`) — **verificado por
+  comando**. A AMB04 (`docker compose up`) continua sendo a verificação
+  completa.
+- **Decisão sobre o Python:** mantido o 3.14.6 da máquina. **Risco
+  conhecido:** o PyTorch e o `segmentation_models_pytorch` podem não ter
+  suporte estável para o Python mais recente. Só afeta a trilha de ML
+  (`current_task_modelo.md`, ML04). Se ocorrer, fixar uma versão mais antiga
+  apenas no projeto via `uv` (ex.: `uv python pin 3.12`), sem alterar o
+  Python da máquina.
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seções 2, 3 e 7.
 **Dependências:** nenhuma.
 
 ## AMB02 — Clonar e configurar o repositório
 
-- [ ] Clonar `https://github.com/plfrancisco/Projeto-Integrador-3-Semestre-`
-- [ ] Copiar `backend/.env.example` para `backend/.env` e preencher os
+- [x] Clonar `https://github.com/plfrancisco/Projeto-Integrador-3-Semestre-`
+- [x] Copiar `backend/.env.example` para `backend/.env` e preencher os
       valores de desenvolvimento (ver AMB03)
-- [ ] Copiar `frontend/.env.example` para `frontend/.env`
+- [x] Copiar `frontend/.env.example` para `frontend/.env`
+- [x] Criar o `.env` da **raiz** (variáveis `POSTGRES_*` do Docker Compose),
+      a partir do `.env.example` da raiz
+
+**Status: CONCLUÍDA em 2026-09-24.** `backend/.env`, `frontend/.env` e o
+`.env` da raiz criados localmente e confirmados como ignorados pelo Git. As
+credenciais do `.env` da raiz devem coincidir com a `DATABASE_URL` de
+`backend/.env`. Cada integrante repete este passo na própria máquina.
+
+**Desvio aceito (somente desenvolvimento local):** o usuário do Postgres em
+desenvolvimento é `root`, o que o torna superusuário — contraria a
+recomendação de menor privilégio de `../rules/security_spec.md`, seção 6.2.
+Aceito porque o banco não publica porta no host e o ambiente não é exposto.
+Não replicar em qualquer ambiente fora da máquina de desenvolvimento.
 
 **Especificação:** `../plan/api/api_spec.md`, seção 2.6.
 **Dependências:** AMB01.
 
 ## AMB03 — Arquivos de exemplo de variáveis de ambiente
 
-- [ ] Criar `backend/.env.example` com as variáveis da tabela abaixo
-- [ ] Criar `frontend/.env.example` com `VITE_API_URL`
-- [ ] Confirmar que `.env` (sem `.example`) está no `.gitignore` — nunca
+- [x] Criar `backend/.env.example` com as variáveis da tabela abaixo
+- [x] Criar `frontend/.env.example` com `VITE_API_URL`
+- [x] Confirmar que `.env` (sem `.example`) está no `.gitignore` — nunca
       versionar valores reais
+
+**Status: CONCLUÍDA em 2026-09-24**, aprovada pelo usuário após revisão em
+duas rodadas.
+
+- **Arquivos:** `backend/.env.example` (7 variáveis) e
+  `frontend/.env.example` (`VITE_API_URL`).
+- **Validação:** `.env` ignorado pelo Git, `.env.example` versionável; nomes
+  das variáveis idênticos a `api_spec.md`, seção 2.6; nenhum valor com
+  aparência de credencial (só `SEU_USUARIO:SUA_SENHA` como placeholder).
+- **Decisão registrada:** `MODEL_VERSION=v0.1.0-dev` (o `v1.2.0` da spec era
+  exemplo de formato); `api_spec.md` ajustada para coincidir.
+- **Pendência:** aviso de acesso negado ao ignore global do Git
+  (`~/.config/git/ignore`) — problema de permissão local, não afeta o
+  projeto.
 
 **Conteúdo de referência para `backend/.env.example`:**
 

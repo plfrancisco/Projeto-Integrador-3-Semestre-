@@ -267,7 +267,28 @@ resultado apresentado
 usuário confirma a conclusão
         ↓
 task aplicável é atualizada
+        ↓
+README.md da raiz é atualizado, se a mudança o afetar
 ```
+
+## 11.1 Manutenção do README
+
+O `README.md` da raiz é a vitrine do projeto, escrito para quem chega de fora
+(avaliadores, recrutadores, outros desenvolvedores): apresenta o problema, a
+solução, as decisões técnicas, a stack, o estado e como executar. Ao
+concluir uma task, atualizá-lo quando a mudança alterar:
+
+- o estado do projeto (o que está pronto e o que falta) ou os resultados;
+- a stack, as funcionalidades ou os passos para executar;
+- comandos, portas ou variáveis de ambiente relevantes.
+
+O que **não** vai no README: regras de desenvolvimento, requisitos de
+segurança, fluxo de tasks e convenções internas. Isso vive em `.context/` e o
+README apenas aponta para lá. Ele descreve **o que existe**, nunca o planejado
+como se já estivesse implementado, e não publica resultados que não foram
+medidos. Não contém segredos nem valores reais de `.env`. A atualização entra
+no mesmo commit da mudança que a motivou, ou em commit `docs:` imediatamente
+seguinte.
 
 ---
 

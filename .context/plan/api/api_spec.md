@@ -118,7 +118,7 @@ lista separada por vírgula. Em desenvolvimento, `http://localhost:5173`
 |---|---|---|
 | `DATABASE_URL` | `postgresql://user:senha@db:5432/armadilhas` | Sim |
 | `MODEL_WEIGHTS_PATH` | `/app/models/checkpoints/latest.pt` | Sim |
-| `MODEL_VERSION` | `v1.2.0` | Sim |
+| `MODEL_VERSION` | `v0.1.0-dev` | Sim |
 | `UPLOADS_DIR` | `/app/data/uploads` | Sim |
 | `CORS_ORIGENS` | `http://localhost:5173` | Sim |
 | `LIMIAR_ATENCAO` | `40` | Não — padrão 40 |
