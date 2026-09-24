@@ -30,7 +30,8 @@ Antes de uma mudança relevante, a IA deve consultar:
 1. a task aplicável em `.context/task/`
 2. `.context/plan/foundation/project_overview.md`
 3. a especificação do domínio afetado em `.context/plan/`
-4. estas regras
+4. estas regras — em especial a seção 8.1 (comentários), que vale para todo
+   código e configuração escritos
 5. `.context/rules/security_spec.md`, quando a mudança tocar entrada de
    usuário, upload, autenticação, banco de dados ou dependências
 6. a skill especializada aplicável em `.agents/skills/`, quando existir uma
@@ -190,6 +191,53 @@ A IA não pode:
 - implementar módulos planejados sem solicitação
 - adicionar credenciais ao código
 - corrigir problemas não relacionados sem informar o usuário
+
+## 8.1 Comentários no código
+
+O código-fonte e os arquivos de configuração devem ser compreensíveis por
+**qualquer desenvolvedor que os abra sem conhecer este projeto**, seguindo o
+padrão de mercado. Comentário é escrito para quem lê o arquivo, não para quem
+acompanhou o processo de desenvolvimento.
+
+**Princípio:** o comentário explica o **porquê** — uma decisão, uma restrição
+ou um comportamento não óbvio. O **o quê** já está no nome e no código.
+
+Devem existir:
+
+- docstrings em módulos, classes e funções públicas (Python: docstring de
+  três aspas; TypeScript: TSDoc), com propósito, parâmetros, retorno e
+  exceções relevantes;
+- comentário curto em regra de negócio, restrição ou decisão não evidente,
+  explicando o motivo em linguagem própria;
+- em configuração (`.env.example`, Dockerfile, compose, `pyproject`), o
+  propósito de cada variável ou instrução, quando não for autoexplicativo.
+
+Não devem existir:
+
+- **referências a tasks ou ao processo**: IDs (`DB01`, `API03`, `FE05`),
+  "será implementado na etapa X", "fornecido pela task Y", "conforme
+  solicitado", ou menção a quem escreveu ou revisou o código. Um comentário
+  que só faz sentido para quem acompanhou o processo é proibido;
+- **justificativa que apenas aponta para um documento** ("conforme a spec",
+  "ver seção 4"). A razão deve estar escrita no próprio comentário; uma
+  referência a documento permanente pode complementá-la, nunca substituí-la;
+- comentário que repete o código (`# incrementa i`);
+- código comentado — o Git guarda o histórico;
+- comentário desatualizado, autoria ou data (`# criado por ... em ...`);
+- `TODO`/`FIXME` sem contexto suficiente para outra pessoa agir.
+
+**Idioma:** português, consistente com os nomes de domínio do projeto
+(`armadilha`, `refil`, `análise`). Termos técnicos consagrados podem
+permanecer em inglês.
+
+Quando algo ainda não existe, o comentário descreve o **fato técnico**, não o
+cronograma:
+
+| Evitar | Preferir |
+|---|---|
+| `# API01 fornecerá src.main:app` | `# Ponto de entrada ASGI da aplicação (módulo src.main, objeto app).` |
+| `# Padrão: não informado na spec.` | `# Obrigatória.` |
+| `# TODO: fazer na DB03` | `# TODO: impedir dois refis ativos na mesma armadilha (índice único parcial).` |
 
 ---
 

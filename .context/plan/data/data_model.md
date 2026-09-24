@@ -139,8 +139,8 @@ Unidade física instalada em um estabelecimento.
 | Campo | Tipo | Regra |
 |---|---|---|
 | `id` | `uuid` | PK |
-| `estabelecimento_id` | `uuid` | FK, nulo no MVP |
-| `identificador` | `varchar` | Código legível para identificar a unidade em campo |
+| `estabelecimento_id` | `uuid` | **Não existe no MVP.** Adicionada, junto com a tabela `estabelecimento` e a FK, por migration da Fase 2 — uma FK para tabela inexistente não pode ser criada |
+| `identificador` | `varchar` | Código legível para identificar a unidade em campo. **Único** (`UNIQUE`) — sustenta o erro `IDENTIFICADOR_DUPLICADO` de `../api/api_spec.md`, seção 2.3 |
 | `modelo` | `varchar` | Ex.: `StickFly K-45` |
 | `localizacao` | `varchar` | Descrição do ponto de instalação |
 | `data_instalacao` | `date` | |
@@ -229,6 +229,27 @@ definidos em `../foundation/project_overview.md`, seção 7.2. É persistido —
 não calculado sob demanda — justamente porque os limiares podem ser
 recalibrados: uma análise deve preservar o status vigente no momento em que
 foi feita.
+
+## 7.4 Restrições e índices do MVP
+
+Restrições declaradas no banco, não apenas validadas na aplicação — o banco é
+a última barreira contra dado inconsistente.
+
+| Tabela | Restrição / índice | Motivo |
+|---|---|---|
+| todas | `id uuid` com default `gen_random_uuid()` | Identificador gerado pelo banco |
+| todas | `criado_em timestamptz` com default `now()` | Conforme as seções 6.2 a 6.4 |
+| `armadilha` | `UNIQUE (identificador)` | Erro `IDENTIFICADOR_DUPLICADO` da API |
+| `refil` | FK `armadilha_id` → `armadilha.id`, `ON DELETE RESTRICT` | Não há exclusão de armadilha no MVP; RESTRICT impede apagar histórico por acidente |
+| `refil` | `CHECK (data_troca IS NULL OR data_troca >= data_instalacao)` | Um refil não é trocado antes de instalado |
+| `refil` | índice em `armadilha_id` | Consulta do refil ativo e do histórico por armadilha |
+| `analise` | FK `refil_id` → `refil.id`, `ON DELETE RESTRICT` | Mesmo motivo |
+| `analise` | `CHECK (percentual_coberto BETWEEN 0 AND 100)` | Regra da seção 6.4 |
+| `analise` | `CHECK (status IN ('ok', 'atencao', 'trocar'))` | Valores da seção 6.4; sem acento, conforme a seção 7.3 |
+| `analise` | índice em `(refil_id, analisado_em)` | Série temporal por refil, ordenada — a consulta central do sistema |
+
+A regra de **um refil ativo por armadilha** (seção 6.3) **não** faz parte da
+migration inicial: é a task DB03, em migration própria.
 
 ---
 
