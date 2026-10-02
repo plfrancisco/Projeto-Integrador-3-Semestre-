@@ -28,23 +28,25 @@ sintético.
 
 ## DB01 — Migration inicial
 
-- [ ] Migration Alembic criando `armadilha`, `refil`, `analise`
-- [ ] Tipos e defaults conforme especificação (`uuid`, `timestamptz`,
+- [x] Migration Alembic criando `armadilha`, `refil`, `analise`
+- [x] Tipos e defaults conforme especificação (`uuid`, `timestamptz`,
       `numeric(5,2)`)
-- [ ] Confirmar que toda alteração futura de schema também passa por
+- [x] Confirmar que toda alteração futura de schema também passa por
       migration — nunca alteração manual
 
 **Especificação:** `../plan/data/data_model.md`, seções 5 e 6.
 **Dependências:** `current_task_infra.md` (INFRA01).
+**Concluída em:** 2026-09-24.
 
 ## DB02 — Entidades e repositórios
 
-- [ ] Entidades SQLAlchemy mapeando as três tabelas
-- [ ] Repositórios com as operações de leitura/escrita necessárias à API
-- [ ] Entidades em `src/entities/`, não em `src/networks/`
+- [x] Entidades SQLAlchemy mapeando as três tabelas
+- [x] Repositórios com as operações de leitura/escrita necessárias à API
+- [x] Entidades em `src/entities/`, não em `src/networks/`
 
 **Especificação:** `../plan/data/data_model.md`, seção 6.
 **Dependências:** DB01.
+**Concluída em:** 2026-10-02.
 
 ## DB03 — Regra de integridade: refil ativo único
 
