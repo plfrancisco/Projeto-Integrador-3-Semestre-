@@ -23,8 +23,6 @@ outra especialidade, mesmo quando há dependência entre elas — a dependência
 | Arquivo | Estado | Especialidade |
 |---|---|---|
 | `current_task_ambiente.md` | ATIVA | Pré-requisito de todas as demais — configuração local de cada integrante |
-| `current_task_infra.md` | ATIVA | Ambiente Python, estrutura de pastas, Docker Compose |
-| `current_task_banco.md` | ATIVA | Migration, entidades ORM, regra de integridade do refil ativo |
 | `current_task_api.md` | ATIVA | Backend FastAPI — 8 endpoints e stub de inferência |
 | `current_task_frontend.md` | ATIVA | Interface web — as 4 telas do MVP |
 | `current_task_modelo.md` | ATIVA | Especificação de treino, dataset sintético, baseline, treino da U-Net, avaliação |
@@ -37,6 +35,11 @@ outra especialidade, mesmo quando há dependência entre elas — a dependência
 
 Arquivos concluídos ficam em `completed/`, fora do fluxo de execução ativo.
 Não podem ser alterados sem autorização explícita.
+
+| Arquivo | Escopo | Concluída em |
+|---|---|---|
+| `completed/current_task_infra.md` | Ambiente Python, estrutura de pastas, Docker Compose | 2026-10-02 |
+| `completed/current_task_banco.md` | Migration, entidades ORM, regra de integridade do refil ativo | 2026-10-02 |
 
 ---
 

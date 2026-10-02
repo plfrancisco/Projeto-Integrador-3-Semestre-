@@ -21,7 +21,7 @@ Cobre ambiente Python, estrutura de pastas e Docker Compose. Não cobre
 código de aplicação (backend, frontend, modelo) nem o pipeline de treino,
 que roda fora do Docker por decisão registrada em `tech_stack.md`, seção 6.1.
 
-**Pré-requisito:** `current_task_ambiente.md` concluída pela pessoa que vai
+**Pré-requisito:** `../current_task_ambiente.md` concluída pela pessoa que vai
 executar esta task — pré-requisitos de software instalados antes de
 inicializar qualquer coisa aqui.
 
@@ -41,7 +41,7 @@ Ruff 0.16.8 como única dependência (grupo `dev`); `requires-python =
 quebrar a instalação de integrantes com Python mais antigo). `requirements.txt`
 sem dependências de aplicação, por ainda não existirem.
 
-**Especificação:** `../plan/foundation/tech_stack.md`, seção 7.
+**Especificação:** `../../plan/foundation/tech_stack.md`, seção 7.
 **Dependências:** nenhuma.
 
 ## INFRA02 — Estrutura de pastas
@@ -57,7 +57,7 @@ o `.gitignore` não cobria `data/` e `models/` por completo; corrigido com
 `data/*` e `models/*`, mantendo apenas os `.gitkeep`. Sem isso, dataset ou
 material da empresa parceira poderiam ir para o repositório público.
 
-**Especificação:** `../plan/foundation/tech_stack.md`, seção 8.
+**Especificação:** `../../plan/foundation/tech_stack.md`, seção 8.
 **Dependências:** nenhuma.
 
 **Nota:** a rede neural vai em `src/networks/`, não em `src/models/` —
@@ -88,13 +88,13 @@ deve ser reaberta.
   API01, `src.main:app`) e build do frontend (depende da FE01,
   `package.json`). A verificação completa é a AMB04.
 - **Desvio aceito:** `POSTGRES_USER=root` é superusuário; ver
-  `current_task_ambiente.md`, AMB02.
+  `../current_task_ambiente.md`, AMB02.
 - **Observação:** em hosts Linux, o bind mount `./data/uploads` é criado como
   root e o usuário `app` do container pode não conseguir gravar. Não afeta
   Windows/Docker Desktop.
 
-**Especificação:** `../plan/foundation/tech_stack.md`, seção 6.1;
-`../rules/security_spec.md`, seções 3 e 10.1.
+**Especificação:** `../../plan/foundation/tech_stack.md`, seção 6.1;
+`../../rules/security_spec.md`, seções 3 e 10.1.
 **Dependências:** INFRA01, INFRA02.
 
 **Nota:** o treino do modelo **não** roda em container — GPU passthrough via

@@ -12,10 +12,10 @@ máquina antes de qualquer outra task começar
 Garantir que qualquer pessoa do grupo consiga clonar o repositório e ter o
 projeto rodando localmente, sem depender de conhecimento não documentado.
 Esta task é **pré-requisito de todas as outras** — nenhuma task de
-`current_task_infra.md` em diante deve ser iniciada antes desta estar
+`completed/current_task_infra.md` em diante deve ser iniciada antes desta estar
 concluída.
 
-Diferença em relação a `current_task_infra.md`: aquela cria a estrutura do
+Diferença em relação a `completed/current_task_infra.md`: aquela cria a estrutura do
 repositório (uma vez, por quem inicia o projeto); esta é o que **cada
 integrante** repete na própria máquina para conseguir trabalhar.
 
@@ -25,7 +25,7 @@ integrante** repete na própria máquina para conseguir trabalhar.
 
 Cobre pré-requisitos de software, variáveis de ambiente e verificação de que
 o ambiente sobe. Não cobre a criação da estrutura de pastas em si
-(`current_task_infra.md`, INFRA02) nem a escrita de código de aplicação.
+(`completed/current_task_infra.md`, INFRA02) nem a escrita de código de aplicação.
 
 ---
 
@@ -146,7 +146,7 @@ inferência (`current_task_api.md`, API04), que não depende deste arquivo.
       arquivos ainda)
 
 **Dependências:** AMB01, AMB02, AMB03, e a estrutura de
-`current_task_infra.md` já criada.
+`completed/current_task_infra.md` já criada.
 
 ---
 

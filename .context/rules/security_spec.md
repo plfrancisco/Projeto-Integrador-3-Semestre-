@@ -253,7 +253,7 @@ apenas ao log do servidor.
 
 - [ ] Confirmar a biblioteca de detecção de tipo real de arquivo a usar
       (ex.: `python-magic`) e integrá-la em `current_task_api.md`, API07
-- [ ] Definir usuário não-root nas imagens Docker de `current_task_infra.md`,
+- [ ] Definir usuário não-root nas imagens Docker de `../task/completed/current_task_infra.md`,
       INFRA03
 - [ ] Revisar este documento antes de qualquer implantação além de
       demonstração local/controlada

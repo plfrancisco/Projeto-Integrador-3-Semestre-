@@ -28,7 +28,7 @@ Cobre as 4 telas do MVP. Não cobre a tela de comparação com o baseline
 - [ ] `VITE_API_URL` lido de variável de ambiente
 
 **Especificação:** `../plan/foundation/tech_stack.md`, seção 3.
-**Dependências:** `current_task_infra.md` (INFRA02).
+**Dependências:** `completed/current_task_infra.md` (INFRA02).
 
 ## FE02 — Camada de serviços da API
 

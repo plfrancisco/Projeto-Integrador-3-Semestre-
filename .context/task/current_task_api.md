@@ -39,7 +39,7 @@ especial as seções 3 (nenhum segredo em código), 5 (upload), 6.1 (SQL) e 9
       `LIMIAR_ATENCAO`, `LIMIAR_TROCAR`
 
 **Especificação:** `../plan/api/api_spec.md`, seção 2.6.
-**Dependências:** `current_task_infra.md` (INFRA01, INFRA02).
+**Dependências:** `completed/current_task_infra.md` (INFRA01, INFRA02).
 
 ## API02 — Formato padronizado de erro
 
@@ -60,7 +60,7 @@ especial as seções 3 (nenhum segredo em código), 5 (upload), 6.1 (SQL) e 9
 - [ ] `PATCH /api/armadilhas/{id}` — `data_instalacao` não editável
 
 **Especificação:** `../plan/api/api_spec.md`, seção 4.
-**Dependências:** `current_task_banco.md` (DB02), API01, API02.
+**Dependências:** `completed/current_task_banco.md` (DB02), API01, API02.
 
 ## API04 — Stub de inferência
 
@@ -92,7 +92,7 @@ deve ser reaberta sem motivo novo.
 - [ ] Se não houver refil ativo, cria apenas o novo
 
 **Especificação:** `../plan/api/api_spec.md`, seção 5.1.
-**Dependências:** `current_task_banco.md` (DB03).
+**Dependências:** `completed/current_task_banco.md` (DB03).
 
 ## API07 — Endpoint de análise
 

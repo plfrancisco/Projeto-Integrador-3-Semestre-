@@ -36,7 +36,7 @@ imagens.
 - [ ] Imagens geradas correspondem ao percentual registrado em cada análise
 
 **Especificação:** `../plan/data/seed_demo.md`.
-**Dependências:** `current_task_banco.md` (DB01), `current_task_modelo.md`
+**Dependências:** `completed/current_task_banco.md` (DB01), `current_task_modelo.md`
 (ML02).
 
 **Nota:** a correspondência entre imagem e percentual é obrigatória. Se as
