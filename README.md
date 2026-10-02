@@ -66,7 +66,8 @@ Além da leitura pontual, o sistema guarda o histórico de cada armadilha e **es
 
 - [X] Especificação técnica completa (arquitetura, modelo, API, telas, avaliação)
 - [X] Ambiente de desenvolvimento e infraestrutura com Docker
-- [ ] Banco de dados e API
+- [X] Banco de dados
+- [ ] API
 - [ ] Interface web
 - [ ] Gerador de dataset sintético
 - [ ] Treinamento e avaliação do modelo

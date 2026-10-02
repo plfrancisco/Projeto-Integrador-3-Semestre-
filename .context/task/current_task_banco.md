@@ -1,7 +1,7 @@
 # CURRENT TASK — BANCO DE DADOS — Projeto Integrador
 
 **Versão:** 1.0
-**Status:** ATIVA
+**Status:** CONCLUÍDA (2026-10-02)
 **Escopo:** migration inicial, entidades ORM, repositórios e regras de
 integridade
 
@@ -50,12 +50,13 @@ sintético.
 
 ## DB03 — Regra de integridade: refil ativo único
 
-- [ ] Constraint ou verificação que impede duas linhas de `refil` com
+- [x] Constraint ou verificação que impede duas linhas de `refil` com
       `data_troca IS NULL` para a mesma `armadilha_id`
-- [ ] Teste automatizado cobrindo a regra
+- [x] Teste automatizado cobrindo a regra
 
 **Especificação:** `../plan/data/data_model.md`, seção 6.3.
 **Dependências:** DB02.
+**Concluída em:** 2026-10-02.
 
 **Nota:** esta regra sustenta a série temporal do projeto inteiro. Sem ela,
 duas análises simultâneas em refis diferentes da mesma armadilha
